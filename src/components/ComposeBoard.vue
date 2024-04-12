@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue'
-import { required, url } from '@vuelidate/validators'
+import { reactive, ref } from 'vue'
+import { required, url, maxLength, helpers } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 
-const form = ref({
+const form = reactive({
   userId: '',
   title: '',
   body: '',
@@ -13,21 +13,33 @@ const form = ref({
 const showImageUrl = ref(false)
 
 const rules = {
-  userId: { required },
-  title: { required },
-  body: { required },
-  imageUrl: { required, url }
+  userId: { 
+    required: helpers.withMessage('Enter the unique id of your user', required),
+    maxLength: helpers.withMessage('Should be less than 100 characters', maxLength(100))
+  },
+  title: { 
+    required: helpers.withMessage('A title for the notification', required),
+    maxLength: helpers.withMessage('Should be less than 50 characters', maxLength(100))
+   },
+  body: { 
+    required: helpers.withMessage('Enter the body of the notification', required),
+    maxLength: helpers.withMessage('Should be less than 200 characters', maxLength(200))
+  },
+  imageUrl: {
+    url: helpers.withMessage('Enter a valid url', url)
+  }
 }
 
 const v$ = useVuelidate(rules, form)
 
-const submitForm = () => {
-  v$.value.$touch()
-  if (v$.value.$error) {
-    // Form is invalid.
-    return
-  }
-  // Form is valid. Submit the form...
+const submitForm = async () => {
+    v$.value.$touch()
+  const result = await v$.value.$validate()
+  console.log(result)
+  if (!result)
+   console.log('nooo')
+  else
+  console.log(form)
 }
 </script>
 <template>
@@ -37,6 +49,7 @@ const submitForm = () => {
         <label for="userId">User ID:</label>
         <input
           id="userId"
+          placeholder="your-user-id"
           type="text"
           v-model="form.userId"
           @blur="v$.userId.$touch"
@@ -51,6 +64,7 @@ const submitForm = () => {
         <input
           id="title"
           type="text"
+          placeholder="You're being viewed"
           v-model="form.title"
           @blur="v$.title.$touch"
           :class="{ error: v$.title.$errors.length }"
@@ -63,6 +77,7 @@ const submitForm = () => {
         <label for="body">Body:</label>
         <textarea
           id="body"
+          placeholder="James just viewed your profile"
           v-model="form.body"
           @blur="v$.body.$touch"
           :class="{ error: v$.body.$errors.length }"
@@ -80,6 +95,7 @@ const submitForm = () => {
         <input
           id="imageUrl"
           type="text"
+          placeholder="https://img1.com/image3465"
           v-model="form.imageUrl"
           @blur="v$.imageUrl.$touch"
           :class="{ error: v$.imageUrl.$errors.length }"
@@ -111,10 +127,12 @@ const submitForm = () => {
 }
 .cmp-value textarea {
     width: 500px;
-    height: 250px;
+    height: 100px;
+    padding: 10px 20px;
+    font-family: var(--body-font2);
     outline: none;
     border: 1px solid  #ccc;
-    resizable: false;
+    resize: none;
 }
 .cmp-value .error {
     border-color: red;

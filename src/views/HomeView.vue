@@ -20,12 +20,7 @@ import Header from '@/components/BaseHeader.vue'
 
       
     </div>
-    <div class="images">
-      <div class="img"></div>
-      <div class="img"></div>
-      <div class="img"></div>
-      <div class="img"></div>      
-    </div>
+    <img class="images" src="/dashboard.jpg">
   </main>
 </template>
 <style scoped>
@@ -43,6 +38,7 @@ main {
 }
 .hero {
   width: 500px;
+  margin: 30px;
   /* border: 1px solid green; */
   font-size: 20px;
   display: flex;
@@ -56,12 +52,12 @@ main {
 }
 .images {
   display: grid;
-  grid-template-columns: 2fr 1fr 2fr;
-  grid-template-rows: 2fr 1fr 2fr;
-  width: 300px;
-  height: 500px;
-  border: 1px solid red;
+  width: 400px;
+  /* height: 500px; */
+  /* border: 1px solid red; */
   flex-flow: row wrap;
+  box-shadow: 5px 5px 5px rgb(143, 143, 207);
+  border-radius: 10px;
   gap: 20px;
   justify-content: center;
 }
