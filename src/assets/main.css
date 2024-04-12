@@ -1,0 +1,74 @@
+@import './base.css';
+a {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  text-align: center;
+  padding: 0;
+}
+.a-button-outline {
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+.button-outline, 
+.a-button-outline {
+  border: 1px solid #383636;
+  color: #222020;
+  background-color: white;
+  padding: 0.1rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  /* width: 80px; */
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--title-font);
+  transition: 0.4s;
+
+}
+.btn {
+  transition: 0.4s;
+  cursor: pointer;
+}
+.btn:hover {
+  transform: scale(1.1);
+}
+.btn:active {
+  transform: scale(0.95);
+}
+
+.button-outline:hover,
+.a-button-outline:hover {
+  color: white;
+  background-color: #222020;
+}
+.button-outline:active,
+.a-button-outline:active {
+  transform: scale(0.95);
+}
+.danger-outline {
+  color: red;
+  background-color: var(--color-background);
+  border-color: red
+}
+.danger-outline:hover {
+  color: white;
+  background-color: red;
+}
+input {
+  outline: none;
+}
+.error-msg {
+  font-weight: 300;
+  font-size: 12px;
+  color: red
+}
+.fcol {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex;
+  align-items: flex-start;
+}
