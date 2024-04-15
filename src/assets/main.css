@@ -80,3 +80,8 @@ input {
   justify-content: flex;
   align-items: flex-start;
 }
+.label {
+  margin-right: 10px;
+  color: var(--primary);
+  font-weight: 600;
+}

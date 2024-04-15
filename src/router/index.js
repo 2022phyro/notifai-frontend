@@ -53,7 +53,7 @@ const router = createRouter({
         {
           path: 'settings',
           name: 'dbSettings',
-          component: SignupView
+          component: () => import('../components/SettingsBoard.vue')
         },
         {
           path: 'docs',

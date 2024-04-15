@@ -43,11 +43,7 @@ article > .part {
   flex-flow: column nowrap;
   width: 250px;
 }
-.label {
-  margin-right: 10px;
-  color: var(--primary);
-  font-weight: 600;
-}
+
 .menu {
   position: absolute;
   top: 30px;

@@ -20,7 +20,7 @@ import {
   faKey,
   faChevronDown
 } from '@fortawesome/free-solid-svg-icons'
-import { faEye, faTrashCan, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
+import { faEye, faTrashCan, faEyeSlash, faCopy } from '@fortawesome/free-regular-svg-icons'
 library.add({
   faHouse,
   faGear,
@@ -38,7 +38,8 @@ library.add({
   faSearch,
   faKey,
   faChevronDown,
-  faMobileScreenButton
+  faMobileScreenButton,
+  faCopy
 })
 import App from './App.vue'
 import router from './router'
