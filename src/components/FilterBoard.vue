@@ -33,7 +33,7 @@ const resetAll = () => {
   read.value = null
 }
 const search = () => {
-    const nonEmptyValues = Object.fromEntries(
+  const nonEmptyValues = Object.fromEntries(
     Object.entries(filterValues).filter(([key, value]) => value !== null && value !== '')
   )
   console.log(nonEmptyValues)
@@ -41,9 +41,11 @@ const search = () => {
 </script>
 <template>
   <div class="filter-bar">
-    <div class=" reset main">
-      <div class="reset button-outline" @click="resetAll"><fa-icon :icon="['fa', 'rotate-right']" /> Reset all</div>
-      <div class=" reset button-outline" @click="search"><fa-icon :icon="['fa', 'search']" /></div>
+    <div class="reset main">
+      <div class="reset button-outline" @click="resetAll">
+        <fa-icon :icon="['fa', 'rotate-right']" /> Reset all
+      </div>
+      <div class="reset button-outline" @click="search"><fa-icon :icon="['fa', 'search']" /></div>
     </div>
     <div class="status option">
       <h2>STATUS</h2>
@@ -100,7 +102,7 @@ const search = () => {
   align-items: center;
 }
 .reset.main {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 .reset svg {
   font-size: 18px;

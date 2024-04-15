@@ -13,7 +13,7 @@ a {
   font-size: 16px;
   font-weight: 500;
 }
-.button-outline, 
+.button-outline,
 .a-button-outline {
   border: 1px solid #383636;
   color: #222020;
@@ -27,7 +27,6 @@ a {
   font-weight: 500;
   font-family: var(--title-font);
   transition: 0.4s;
-
 }
 .btn {
   transition: 0.4s;
@@ -49,10 +48,19 @@ a {
 .a-button-outline:active {
   transform: scale(0.95);
 }
+.button-outline:disabled:hover,
+.button-outline:disabled,
+.button-outline:disabled:active {
+  cursor: not-allowed;
+  background: rgba(0,0,0, 0.5);
+  backdrop-filter: blur(5px);
+  transform: none;
+  color: black;
+}
 .danger-outline {
   color: red;
   background-color: var(--color-background);
-  border-color: red
+  border-color: red;
 }
 .danger-outline:hover {
   color: white;
@@ -64,7 +72,7 @@ input {
 .error-msg {
   font-weight: 300;
   font-size: 12px;
-  color: red
+  color: red;
 }
 .fcol {
   display: flex;

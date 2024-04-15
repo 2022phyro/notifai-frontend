@@ -1,8 +1,16 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { required, email, minLength, maxLength, helpers } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+import { inst, BASE_URL } from '@/utils/auth'
 
+
+const isLoading = ref(false)
+const lgError = ref(null)
+const authStore = useAuthStore()
+const router = useRouter()
 const form = reactive({
   firstName: '',
   lastName: '',
@@ -10,26 +18,32 @@ const form = reactive({
   password: '',
   phone: ''
 })
-
-const passwordPattern = helpers.regex('passwordPattern', /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,40}$/)
-
+const pwdSeen = ref(true)
+const passwordPattern = (value) => {
+  return /(?=.*[a-zA-Z])(?=.*[0-9])/.test(value)
+}
 const rules = {
-  firstName: { 
-    required: helpers.withMessage("Please input your name", required),
-    maxLength: helpers.withMessage("Should be less than 100 characters", maxLength(100)) },
-  lastName: { 
-    required: helpers.withMessage("Please input your name", required),
-    maxLength: helpers.withMessage("Should be less than 100 characters", maxLength(100)) },
-  email: { 
-    required: helpers.withMessage("Please input your email", required),
-    email: helpers.withMessage("Enter a valid email address", email) 
+  firstName: {
+    required: helpers.withMessage('Please input your name', required),
+    maxLength: helpers.withMessage('Should be less than 100 characters', maxLength(100))
   },
-  password: { 
-    required: helpers.withMessage("Enter in your password", required), 
-    minLength: helpers.withMessage("Should be at least 6 characters", minLength(6)),
-   passwordPattern: helpers.withMessage("Should contain at least one letter and one number", passwordPattern)
- },
-  phone: { 
+  lastName: {
+    required: helpers.withMessage('Please input your name', required),
+    maxLength: helpers.withMessage('Should be less than 100 characters', maxLength(100))
+  },
+  email: {
+    required: helpers.withMessage('Please input your email', required),
+    email: helpers.withMessage('Enter a valid email address', email)
+  },
+  password: {
+    required: helpers.withMessage('Enter in your password', required),
+    minLength: helpers.withMessage('Should be at least 6 characters', minLength(6)),
+    passwordPattern: helpers.withMessage(
+      'Should contain at least one letter and one number',
+      passwordPattern
+    )
+  },
+  phone: {
     // required: helpers.withMessage("Please input a valid phone number", required)
   }
 }
@@ -38,12 +52,32 @@ const v$ = useVuelidate(rules, form)
 
 const handleSubmit = async () => {
   v$.value.$touch()
-  const result = await v$.value.$validate()
-  console.log(result)
-  if (!result)
-   console.log('nooo')
-  else
-  console.log(form)
+  isLoading.value = true
+  if (isLoading.value) {
+    const result = await v$.value.$validate()
+    console.log(result)
+    if (!result) {
+      isLoading.value = false
+    } else {
+      const instance = await inst()
+      instance()
+      .post(`${BASE_URL}/signup`, form)
+        .then((response) => {
+          console.log(response.data)
+          const result = response.data.data
+          authStore.setAuth(true)
+          authStore.setToken(result.accessToken, result.access_exp)
+          router.push('/dashboard')
+          isLoading.value = false
+          lgError.value = null
+        })
+        .catch((error) => {
+          const result = error.response.data.errors
+          lgError.value = Object.values(result)[0][0]
+          isLoading.value = false
+        })
+    }
+  }
 }
 </script>
 <template>
@@ -57,10 +91,10 @@ const handleSubmit = async () => {
           id="firstName"
           v-model="form.firstName"
           @blur="v$.firstName.$touch"
-          :class="{ error: v$.firstName.$errors.length}"
+          :class="{ error: v$.firstName.$errors.length }"
         />
         <div class="error-msg" v-if="v$.firstName.$errors">
-            {{ v$.firstName.$errors[0]?.$message }}
+          {{ v$.firstName.$errors[0]?.$message }}
         </div>
       </div>
 
@@ -71,10 +105,10 @@ const handleSubmit = async () => {
           id="lastName"
           v-model="form.lastName"
           @blur="v$.lastName.$touch"
-          :class="{ error: v$.lastName.$errors.length}"
+          :class="{ error: v$.lastName.$errors.length }"
         />
         <div class="error-msg" v-if="v$.lastName.$errors">
-            {{ v$.lastName.$errors[0]?.$message }}
+          {{ v$.lastName.$errors[0]?.$message }}
         </div>
       </div>
 
@@ -85,24 +119,26 @@ const handleSubmit = async () => {
           id="email"
           v-model="form.email"
           @blur="v$.email.$touch"
-          :class="{ error: v$.email.$errors.length}"
+          :class="{ error: v$.email.$errors.length }"
         />
         <div class="error-msg" v-if="v$.email.$errors">
-            {{ v$.email.$errors[0]?.$message }}
+          {{ v$.email.$errors[0]?.$message }}
         </div>
       </div>
 
       <div class="auth-form-obj">
         <label for="password">Password:</label>
         <input
-          type="password"
+          :type="!pwdSeen? 'text':'password'"
           id="password"
           v-model="form.password"
           @blur="v$.password.$touch"
-          :class="{ error: v$.password.$errors.length}"
+          :class="{ error: v$.password.$errors.length }"
         />
+        
+        <fa-icon class="pwd-seen" :icon="['far', pwdSeen?'eye': 'eye-slash']" @click="() => pwdSeen =!pwdSeen"/>
         <div class="error-msg" v-if="v$.password.$errors">
-            {{ v$.password.$errors[0]?.$message }}
+          {{ v$.password.$errors[0]?.$message }}
         </div>
       </div>
 
@@ -113,14 +149,17 @@ const handleSubmit = async () => {
           id="phone"
           v-model="form.phone"
           @blur="v$.phone.$touch"
-          :class="{ error: v$.phone.$errors.length}"
+          :class="{ error: v$.phone.$errors.length }"
         />
         <div class="error-msg" v-if="v$.phone.$errors">
-            {{ v$.phone.$errors[0]?.$message }}
+          {{ v$.phone.$errors[0]?.$message }}
         </div>
       </div>
 
-      <button type="submit" class="button-outline to-db">Sign Up</button>
+      <button type="submit" :disabled="isLoading" class="button-outline to-db">Sign Up</button>
+      <div class="error-msg" v-if="lgError">
+          {{ lgError }}
+      </div>
     </form>
   </div>
 </template>
@@ -129,7 +168,7 @@ const handleSubmit = async () => {
   margin-top: 60px;
   padding: 30px 20px;
   min-height: 500px;
-  max-width:450px;
+  max-width: 450px;
   flex-shrink: 0px;
   width: 450px;
   margin: 30px;
@@ -138,37 +177,44 @@ const handleSubmit = async () => {
 }
 
 .error-msg {
-    font-weight: 300;
-    font-size: 12px;
-    color: red
+  font-weight: 300;
+  font-size: 12px;
+  color: red;
 }
 .auth-form-obj {
-    display: flex;
-    flex-flow: column nowrap;
-    margin-bottom: 5px;
-    font-family: var(--body-font1)
+  display: flex;
+  flex-flow: column nowrap;
+  position: relative;
+  margin-bottom: 5px;
+  font-family: var(--body-font1);
 }
 .auth-form-obj input {
-    border: none;
-    border-bottom: 1px solid black;
-    color: #222020;
-    font-size: 16px;
-    background: inherit;
-    padding: 5px;
-    transition: all 0.3s ease
+  border: none;
+  border-bottom: 1px solid black;
+  color: #222020;
+  font-size: 16px;
+  background: inherit;
+  padding: 5px;
+  transition: all 0.3s ease;
 }
 .auth-form-obj input.error {
-    border-bottom: 1px solid red;
+  border-bottom: 1px solid red;
 }
 .auth-form-obj label {
-    font-family: var(--title-font);
-    color: grey;
-    padding-bottom: 4px;
-    font-size: 15px;
-
+  font-family: var(--title-font);
+  color: grey;
+  padding-bottom: 4px;
+  font-size: 15px;
 }
 .to-db {
-    width: 100%;
-    margin-top: 30px;
+  width: 100%;
+  margin-top: 30px;
+}
+.pwd-seen {
+  cursor: pointer;
+  font-size: 18px;
+  position: absolute;
+  right: 20px;
+  top: 40%;
 }
 </style>

@@ -1,26 +1,22 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router'
 import Header from '@/components/BaseHeader.vue'
 </script>
 
 <template>
   <main>
-    <Header/>
+    <Header />
     <div class="hero">
       <p>
-        Hey there, Notification Maverick! Ready to revolutionize 
-        how your sites and applications connect with your audience?
-        Say hello to Notifai, your ultimate notification sidekick. 
-        Whether you're launching a new product, sharing exciting updates, 
-        or just want to spice up your messaging game, we've got the tools
-         you need to stand out. Join the notification revolution and let's 
-         turn up the engagement together!"
+        Hey there, Notification Maverick! Ready to revolutionize how your sites and applications
+        connect with your audience? Say hello to Notifai, your ultimate notification sidekick.
+        Whether you're launching a new product, sharing exciting updates, or just want to spice up
+        your messaging game, we've got the tools you need to stand out. Join the notification
+        revolution and let's turn up the engagement together!"
       </p>
       <RouterLink to="/auth/signup" class="a-button-outline cta">Get started</RouterLink>
-
-      
     </div>
-    <img class="images" src="/dashboard.jpg">
+    <img class="images" src="/dashboard.jpg" />
   </main>
 </template>
 <style scoped>

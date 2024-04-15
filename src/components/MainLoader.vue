@@ -1,40 +1,53 @@
 <template>
   <div class="loader">
-    <!-- <img src="/logo.png" class="spinning-logo" alt="notifai's logo spinning"> -->
     <div class="dots">
-      <img class="dot" src="/logo.png">
-      <img class="dot" src="/logo.png">
-      <img class="dot" src="/logo.png">
-      <!-- <div class="dot"></div>
-      <div class="dot"></div> -->
+
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
   </div>
 </template>
 <style scoped>
 .loader {
-    z-index: 10;
-    width:  100vw;
-    height: 100vh;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    position: relative;
-    background: var(--color-background);
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  position: relative;
+  background: var(--color-background);
 }
 
-
 @keyframes spin-and-move {
-  0% { transform: rotate(0deg) translateX(0); }
-  50% { transform: rotate(180deg) translateX(100px); }
-  100% { transform: rotate(360deg) translateX(200px); }
+  0% {
+    transform: rotate(0deg) translateX(0);
+  }
+  50% {
+    transform: rotate(180deg) translateX(100px);
+  }
+  100% {
+    transform: rotate(360deg) translateX(200px);
+  }
 }
 
 @keyframes dot {
-  0% { opacity: 0; transform: translateX(0); }
-  50% { opacity: 1; transform: translateX(100px); }
-  100% { opacity: 0; transform: translateX(200px); }
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(100px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(200px);
+  }
 }
 .spinning-logo {
   animation: spin-and-move 4s linear infinite;
@@ -52,8 +65,8 @@
 
 .dot {
   background: black;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   animation: dot 1s ease-in-out infinite;
 }

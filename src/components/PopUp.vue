@@ -10,12 +10,12 @@ const props = defineProps({
 console.log(props)
 const emit = defineEmits(['closePopUp', 'pFormSuccess', 'nFormSuccess', 'dFormSuccess'])
 const allMessages = {
-  deleteMsg: ["Are you sure you want to delete this message", "Delete"],
-  logout: ["Are you sure you want to logout?", "Delete"],
-  deleteAcc: ["Are you sure you want to delete your account?", "Delete"],
-  deleteApp: ["Are you sure you want to delete your account?", "Delete"],
+  deleteMsg: ['Are you sure you want to delete this message', 'Delete'],
+  logout: ['Are you sure you want to logout?', 'Delete'],
+  deleteAcc: ['Are you sure you want to delete your account?', 'Delete'],
+  deleteApp: ['Are you sure you want to delete your account?', 'Delete']
 }
-const ma="no"
+const ma = 'no'
 const handleViewMsg = () => {
   console.log('viewMsg')
 }
@@ -44,15 +44,18 @@ const close = () => {
       <span class="close btn" @click="close" v-if="!isLoading">&times;</span>
       <div class="viewMsg" v-if="props.type === 'showMsg'">
         <h3>How on earth could I have missed this</h3>
-        <p>Hello you have received this message. What you do with it next is wholly and
-          truly your choice
+        <p>
+          Hello you have received this message. What you do with it next is wholly and truly your
+          choice
         </p>
       </div>
       <div class="decision" v-else>
-        <p>{{allMessages[props.type][0]}}</p>
+        <p>{{ allMessages[props.type][0] }}</p>
         <div class="buttons">
           <button class="button-outline" @click="close">Cancel</button>
-          <button class="button-outline danger-outline" @click="props.callback">{{allMessages[props.type][1]}}</button>
+          <button class="button-outline danger-outline" @click="props.callback">
+            {{ allMessages[props.type][1] }}
+          </button>
         </div>
       </div>
     </div>
@@ -95,7 +98,8 @@ const close = () => {
   right: 20px;
   top: 20px;
 }
-.decision, .viewMsg {
+.decision,
+.viewMsg {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,36 +1,41 @@
 <script setup>
-import { reactive } from 'vue'
-import { required, email, minLength, maxLength, helpers } from '@vuelidate/validators'
+import { reactive, ref } from 'vue'
+import { required, email, helpers } from '@vuelidate/validators'
+import { inst, BASE_URL } from '@/utils/auth'
 import { useVuelidate } from '@vuelidate/core'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 
+
+const pwdSeen = ref(true)
+const isLoading = ref(false)
+const lgError = ref(null)
+const authState = useAuthStore()
+const { setAuth, setCurrToken } = authState
+const router = useRouter()
 const form = reactive({
-  firstName: '',
-  lastName: '',
   email: '',
-  password: '',
-  phone: ''
+  password: ''
 })
 
-const passwordPattern = helpers.regex('passwordPattern', /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,40}$/)
-
+const passwordPattern = (value) => {
+  return /(?=.*[a-zA-Z])(?=.*[0-9])/.test(value)
+}
+const length = (value) => {
+  return value.length >= 6 && value.length <= 40
+}
 const rules = {
-  firstName: { 
-    required: helpers.withMessage("Please input your name", required),
-    maxLength: helpers.withMessage("Should be less than 100 characters", maxLength(100)) },
-  lastName: { 
-    required: helpers.withMessage("Please input your name", required),
-    maxLength: helpers.withMessage("Should be less than 100 characters", maxLength(100)) },
-  email: { 
-    required: helpers.withMessage("Please input your email", required),
-    email: helpers.withMessage("Enter a valid email address", email) 
+  email: {
+    required: helpers.withMessage('Please input your email', required),
+    email: helpers.withMessage('Enter a valid email address', email)
   },
-  password: { 
-    required: helpers.withMessage("Enter in your password", required), 
-    minLength: helpers.withMessage("Should be at least 6 characters", minLength(6)),
-   passwordPattern: helpers.withMessage("Should contain at least one letter and one number", passwordPattern)
- },
-  phone: { 
-    // required: helpers.withMessage("Please input a valid phone number", required)
+  password: {
+    required: helpers.withMessage('Enter in your password', required),
+    minLength: helpers.withMessage('Should be at between 6 and 40 characters', length),
+    passwordPattern: helpers.withMessage(
+      'Should contain at least one letter and one number',
+      passwordPattern
+    )
   }
 }
 
@@ -38,12 +43,30 @@ const v$ = useVuelidate(rules, form)
 
 const handleSubmit = async () => {
   v$.value.$touch()
-  const result = await v$.value.$validate()
-  console.log(result)
-  if (!result)
-   console.log('nooo')
-  else
-  console.log(form)
+  isLoading.value = true
+  if (isLoading.value) {
+    const result = await v$.value.$validate()
+    if (!result) {
+      isLoading.value = false
+    } else {
+      const instance = await inst()
+      instance
+        .post(`${BASE_URL}/login`, form)
+        .then((response) => {
+          const result = response.data.data
+          setAuth(true)
+          setCurrToken(result.tokens.accessToken, result.tokens.access_exp)
+          router.push('/dashboard')
+          isLoading.value = false
+          lgError.value = null
+        })
+        .catch((error) => {
+          const result = error.response?.data?.errors
+          lgError.value = Object.values(result)[0][0]
+          isLoading.value = false
+        })
+    }
+  }
 }
 </script>
 <template>
@@ -57,27 +80,35 @@ const handleSubmit = async () => {
           id="email"
           v-model="form.email"
           @blur="v$.email.$touch"
-          :class="{ error: v$.email.$errors.length}"
+          :class="{ error: v$.email.$errors.length }"
         />
         <div class="error-msg" v-if="v$.email.$errors">
-            {{ v$.email.$errors[0]?.$message }}
+          {{ v$.email.$errors[0]?.$message }}
         </div>
       </div>
 
       <div class="auth-form-obj">
         <label for="password">Password:</label>
         <input
-          type="password"
+          :type="!pwdSeen ? 'text' : 'password'"
           id="password"
           v-model="form.password"
           @blur="v$.password.$touch"
-          :class="{ error: v$.password.$errors.length}"
+          :class="{ error: v$.password.$errors.length }"
+        />
+        <fa-icon
+          class="pwd-seen"
+          :icon="['far', pwdSeen ? 'eye' : 'eye-slash']"
+          @click="() => (pwdSeen = !pwdSeen)"
         />
         <div class="error-msg" v-if="v$.password.$errors">
-            {{ v$.password.$errors[0]?.$message }}
+          {{ v$.password.$errors[0]?.$message }}
         </div>
       </div>
-      <button type="submit" class="button-outline to-db">Login</button>
+      <button type="submit" :disabled="isLoading" class="button-outline to-db">Login</button>
+      <div class="error-msg" v-if="lgError">
+        {{ lgError }}
+      </div>
     </form>
   </div>
 </template>
@@ -87,7 +118,7 @@ const handleSubmit = async () => {
   border: 1px solid red;
   padding: 30px 20px;
   min-height: 450px;
-  max-width:450px;
+  max-width: 450px;
   flex-shrink: 0px;
   width: 450px;
   margin: 30px;
@@ -96,37 +127,44 @@ const handleSubmit = async () => {
 }
 
 .error-msg {
-    font-weight: 300;
-    font-size: 12px;
-    color: red
+  font-weight: 300;
+  font-size: 12px;
+  color: red;
 }
 .auth-form-obj {
-    display: flex;
-    flex-flow: column nowrap;
-    margin-bottom: 5px;
-    font-family: var(--body-font1)
+  display: flex;
+  flex-flow: column nowrap;
+  margin-bottom: 5px;
+  font-family: var(--body-font1);
+  position: relative;
 }
 .auth-form-obj input {
-    border: none;
-    border-bottom: 1px solid black;
-    color: #222020;
-    font-size: 16px;
-    background: inherit;
-    padding: 5px;
-    transition: all 0.3s ease
+  border: none;
+  border-bottom: 1px solid black;
+  color: #222020;
+  font-size: 16px;
+  background: inherit;
+  padding: 5px;
+  transition: all 0.3s ease;
 }
 .auth-form-obj input.error {
-    border-bottom: 1px solid red;
+  border-bottom: 1px solid red;
 }
 .auth-form-obj label {
-    font-family: var(--title-font);
-    color: grey;
-    padding-bottom: 4px;
-    font-size: 15px;
-
+  font-family: var(--title-font);
+  color: grey;
+  padding-bottom: 4px;
+  font-size: 15px;
 }
 .to-db {
-    width: 100%;
-    margin-top: 30px;
+  width: 100%;
+  margin-top: 30px;
+}
+.pwd-seen {
+  cursor: pointer;
+  font-size: 18px;
+  position: absolute;
+  right: 20px;
+  top: 40%;
 }
 </style>

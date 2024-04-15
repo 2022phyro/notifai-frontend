@@ -13,15 +13,15 @@ const form = reactive({
 const showImageUrl = ref(false)
 
 const rules = {
-  userId: { 
+  userId: {
     required: helpers.withMessage('Enter the unique id of your user', required),
     maxLength: helpers.withMessage('Should be less than 100 characters', maxLength(100))
   },
-  title: { 
+  title: {
     required: helpers.withMessage('A title for the notification', required),
     maxLength: helpers.withMessage('Should be less than 50 characters', maxLength(100))
-   },
-  body: { 
+  },
+  body: {
     required: helpers.withMessage('Enter the body of the notification', required),
     maxLength: helpers.withMessage('Should be less than 200 characters', maxLength(200))
   },
@@ -33,13 +33,11 @@ const rules = {
 const v$ = useVuelidate(rules, form)
 
 const submitForm = async () => {
-    v$.value.$touch()
+  v$.value.$touch()
   const result = await v$.value.$validate()
   console.log(result)
-  if (!result)
-   console.log('nooo')
-  else
-  console.log(form)
+  if (!result) console.log('nooo')
+  else console.log(form)
 }
 </script>
 <template>
@@ -87,7 +85,7 @@ const submitForm = async () => {
         </p>
       </div>
       <h2 class="extras btn" @click="showImageUrl = !showImageUrl">
-        <fa-icon :icon="['fa', !showImageUrl?'chevron-right': 'chevron-down']" />Extras
+        <fa-icon :icon="['fa', !showImageUrl ? 'chevron-right' : 'chevron-down']" />Extras
       </h2>
 
       <div v-if="showImageUrl" class="fcol cmp-value">
@@ -114,40 +112,39 @@ const submitForm = async () => {
   padding: 30px;
 }
 .compose-wrapper form {
-    gap: 10px;
+  gap: 10px;
 }
 .cmp-value {
-    
 }
 .cmp-value input {
-    outline: none;
-    padding: 10px 20px;
-    width: 500px;
-    border: 1px solid  #ccc;
+  outline: none;
+  padding: 10px 20px;
+  width: 500px;
+  border: 1px solid #ccc;
 }
 .cmp-value textarea {
-    width: 500px;
-    height: 100px;
-    padding: 10px 20px;
-    font-family: var(--body-font2);
-    outline: none;
-    border: 1px solid  #ccc;
-    resize: none;
+  width: 500px;
+  height: 100px;
+  padding: 10px 20px;
+  font-family: var(--body-font2);
+  outline: none;
+  border: 1px solid #ccc;
+  resize: none;
 }
 .cmp-value .error {
-    border-color: red;
+  border-color: red;
 }
 .extras {
-    color: var(--primary);
-    font-weight: 600;
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    font-size: 22px;
-    gap: 6px;
-    cursor: pointer;
+  color: var(--primary);
+  font-weight: 600;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  font-size: 22px;
+  gap: 6px;
+  cursor: pointer;
 }
 .extras svg {
-    font-size: 14px;
+  font-size: 14px;
 }
 </style>

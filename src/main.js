@@ -4,23 +4,41 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faHouse, faPen, faFeather, faGear, faBookOpen, faChevronRight, faChevronLeft, faFilter, faRotateRight, faXmark, faSearch, faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { faEye, faTrashCan,  } from '@fortawesome/free-regular-svg-icons'
+import {
+  faHouse,
+  faPen,
+  faFeather,
+  faGear,
+  faBookOpen,
+  faChevronRight,
+  faChevronLeft,
+  faFilter,
+  faRotateRight,
+  faXmark,
+  faSearch,
+  faMobileScreenButton,
+  faKey,
+  faChevronDown
+} from '@fortawesome/free-solid-svg-icons'
+import { faEye, faTrashCan, faEyeSlash } from '@fortawesome/free-regular-svg-icons'
 library.add({
-    faHouse,
-    faGear,
-    faFeather,
-    faPen,
-    faBookOpen,
-    faTrashCan,
-    faEye,
-    faChevronRight,
-    faChevronLeft,
-    faFilter,
-    faRotateRight,
-    faXmark,
-    faSearch,
-    faChevronDown
+  faHouse,
+  faGear,
+  faFeather,
+  faPen,
+  faBookOpen,
+  faTrashCan,
+  faEye,
+  faEyeSlash,
+  faChevronRight,
+  faChevronLeft,
+  faFilter,
+  faRotateRight,
+  faXmark,
+  faSearch,
+  faKey,
+  faChevronDown,
+  faMobileScreenButton
 })
 import App from './App.vue'
 import router from './router'

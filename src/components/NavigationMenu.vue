@@ -1,12 +1,36 @@
 <script setup>
 import { RouterLink, useRoute } from 'vue-router'
+import { onMounted } from 'vue'
+import { inst, BASE_URL } from '@/utils/auth'
+import { storeToRefs } from 'pinia'
+import { useAppStore } from '@/stores/app'
+
 const route = useRoute()
+const appState = useAppStore()
+
+const { currApp, apps } = storeToRefs(appState)
+const { setApps, setCurrApp } = appState
+
+onMounted(async () => {
+  try {
+    const instance = await inst(true)
+    const response = await instance.get(`${BASE_URL}/apps`)
+    setApps(response.data.data)
+    setCurrApp(apps.value[0])
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+const setApp = (app) => {
+  setCurrApp(app)
+}
 </script>
 <template>
   <div class="navigation">
     <RouterLink to="/" class="logo">
-        <img alt="Vue logo" src="@/assets/logo.png" width="125" height="125" />
-        <span>Notifai</span>
+      <img alt="Vue logo" src="@/assets/logo.png" width="125" height="125" />
+      <span>Notifai</span>
     </RouterLink>
     <ul class="nav-wrapper">
       <li :class="['nav-item', { active: route.path === '/dashboard' }]">
@@ -23,11 +47,21 @@ const route = useRoute()
         >
       </li>
       <li :class="['nav-item', { active: route.path === '/dashboard/docs' }]">
-        <RouterLink to="/dashboard/docs"
-          ><fa-icon :icon="['fas', 'book-open']" />Docs</RouterLink
-        >
+        <RouterLink to="/dashboard/docs"><fa-icon :icon="['fas', 'book-open']" />Docs</RouterLink>
+      </li>
+      <li :class="['nav-item', { active: route.path === '/dashboard/docs' }]">
+        <RouterLink to="/dashboard/docs"><fa-icon :icon="['fas', 'key']" />API Keys</RouterLink>
       </li>
     </ul>
+    <div class="footer">
+      <h3>Your Apps</h3>
+      <ul>
+        <li v-for="app in apps" :key="app.id" class="btn" :class="{ current: app === currApp }" @click="setApp(app)">
+          <fa-icon :icon="['fas', 'mobile-screen-button']" v-if="app === currApp"/>
+        {{ app.name }}
+      </li>
+      </ul>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -43,16 +77,17 @@ const route = useRoute()
   justify-content: flex-start;
 }
 .logo {
-    margin-top: 20px;
-    align-self: flex-start;
-    color: white;
-    font-size: 20px;
-    gap: 10px;
-    padding-left: 20px;
+  margin-top: 20px;
+  align-self: flex-start;
+  color: white;
+  font-size: 24px;
+  font-weight: 600px;
+  gap: 10px;
+  padding-left: 20px;
 }
 .logo img {
-    width: 40px;
-    height: 40px;
+  width: 30px;
+  height: 30px;
 }
 .nav-wrapper {
   display: flex;
@@ -77,7 +112,6 @@ const route = useRoute()
   transition: all 0.4s ease;
 }
 
-
 .nav-item a {
   width: 80%;
   height: 100%;
@@ -98,13 +132,13 @@ const route = useRoute()
   transition: all 0.4s ease;
 }
 .nav-item a:active {
-    transform: scale(0.9);
+  transform: scale(0.9);
 }
 .active {
-    position: relative;
+  position: relative;
 }
 .active::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 0;
@@ -113,5 +147,42 @@ const route = useRoute()
   background-color: #00e9d1; /* Replace #color with the color you want */
   border-radius: 10px;
   transform: translateY(-50%);
+}
+.footer {
+  position: absolute;
+  bottom: 30px;
+  padding: 10px 0;
+  width: 100%;
+  height: 150px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  color: white;
+  overflow-y: auto;
+}
+.footer h3 {
+  color: white;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  font-weight: 800px;
+}
+.footer ul {
+  list-style-type: none;
+  font-weight: 800;
+
+}
+.footer li {
+  width: 80%;
+  padding: 0px 0px 0 10px;
+  display: flex;
+  flex-flow: row gap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  margin-left: 15px;
+  }
+.footer li.current {
+   background-color: #00e9d1;
+   color: black;
+   margin-left: 0;
 }
 </style>

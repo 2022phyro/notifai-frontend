@@ -5,24 +5,23 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const isLoading = ref(false)
-/*onBeforeMount(() => {
+onBeforeMount(() => {
   router.beforeEach((to, from, next) => {
-    isLoading.value = true
+    isLoading.value = to.matched.length === 1 && to.matched[0].path === to.path;
     next()
   })
 
   router.afterEach(() => {
     setTimeout(() => {
       isLoading.value = false
-    }, 0) // Delay of 3 seconds
+    }, 2000) // Delay of 3 seconds
   })
-})*/
+})
 </script>
 
 <template>
-  <MainLoader  v-if="isLoading"/>
-  <RouterView v-else/>
+  <MainLoader v-if="isLoading" />
+  <RouterView v-else />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
