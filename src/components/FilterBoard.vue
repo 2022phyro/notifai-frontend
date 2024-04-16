@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watchEffect, reactive } from 'vue'
-
+const emit = defineEmits(['filter'])
 const status = ref(null)
 const retries = ref(0)
 const userId = ref('')
@@ -18,12 +18,6 @@ watchEffect(() => {
   filterValues.retries = retries.value
   filterValues.userId = userId.value
   filterValues.read = read.value
-
-  const nonEmptyValues = Object.fromEntries(
-    Object.entries(filterValues).filter(([key, value]) => value !== null && value !== '')
-  )
-
-  console.log(nonEmptyValues)
 })
 
 const resetAll = () => {
@@ -36,7 +30,7 @@ const search = () => {
   const nonEmptyValues = Object.fromEntries(
     Object.entries(filterValues).filter(([key, value]) => value !== null && value !== '')
   )
-  console.log(nonEmptyValues)
+  emit('filter', nonEmptyValues)
 }
 </script>
 <template>

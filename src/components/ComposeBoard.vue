@@ -2,16 +2,35 @@
 import { reactive, ref } from 'vue'
 import { required, url, maxLength, helpers } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
+import { useRouter } from 'vue-router'
+import { inst, BASE_URL } from '@/utils/auth'
+import { storeToRefs } from 'pinia'
+import { useAppStore } from '@/stores/app'
 
+const router = useRouter()
+
+const { currApp } = storeToRefs(useAppStore())
 const form = reactive({
   userId: '',
   title: '',
   body: '',
-  imageUrl: ''
+  icon: '',
+  clickUrl: '',
+  data: ""
 })
-
+const isLoading = ref(false)
+const errMsg = ref(null)
+const dataholder = ref(JSON.stringify({ user: 'James', age: 23 }, null, 2))
 const showImageUrl = ref(false)
-
+const isJson = (value) => {
+  try {
+    if (value === '') return true
+    const parsedValue = JSON.parse(value)
+    return typeof parsedValue === 'object' && parsedValue !== null && !Array.isArray(parsedValue)
+  } catch {
+    return false
+  }
+}
 const rules = {
   userId: {
     required: helpers.withMessage('Enter the unique id of your user', required),
@@ -25,19 +44,46 @@ const rules = {
     required: helpers.withMessage('Enter the body of the notification', required),
     maxLength: helpers.withMessage('Should be less than 200 characters', maxLength(200))
   },
-  imageUrl: {
+  icon: {
     url: helpers.withMessage('Enter a valid url', url)
+  },
+  clickUrl: {
+    url: helpers.withMessage('Enter a valid url', url)
+  },
+  data: {
+    isJson: helpers.withMessage('Enter a valid json object', isJson)
   }
 }
 
 const v$ = useVuelidate(rules, form)
 
 const submitForm = async () => {
+  isLoading.value = true
   v$.value.$touch()
   const result = await v$.value.$validate()
-  console.log(result)
-  if (!result) console.log('nooo')
-  else console.log(form)
+  if (!result) {
+    isLoading.value = false
+    console.log(form.data)
+  } 
+  else {
+    try {
+      const { data, ...body } = form
+      if (data) {
+        body.data = JSON.parse(data)
+      }
+      const instance = await inst(true)
+      const response = await instance.post(`${BASE_URL}/apps/${currApp.value._id}/notifications`, body)
+      const result = response.data.data
+      console.log(result)
+      router.push('/dashboard')
+      errMsg.value = null
+    } catch (error) {
+      console.log(error)
+      errMsg.value = "Something went wrong. Please try again later"
+    } finally {
+      isLoading.value = false
+    }
+  }
 }
 </script>
 <template>
@@ -89,20 +135,50 @@ const submitForm = async () => {
       </h2>
 
       <div v-if="showImageUrl" class="fcol cmp-value">
-        <label for="imageUrl">Image URL:</label>
+        <label for="icon">Icon URL:</label>
         <input
-          id="imageUrl"
+          id="icon"
           type="text"
           placeholder="https://img1.com/image3465"
-          v-model="form.imageUrl"
-          @blur="v$.imageUrl.$touch"
-          :class="{ error: v$.imageUrl.$errors.length }"
+          v-model="form.icon"
+          @blur="v$.icon.$touch"
+          :class="{ error: v$.icon.$errors.length }"
         />
-        <p class="error-msg" v-if="v$.imageUrl.$errors">
-          {{ v$.imageUrl.$errors[0]?.$message }}
+        <p class="error-msg" v-if="v$.icon.$errors">
+          {{ v$.icon.$errors[0]?.$message }}
         </p>
       </div>
-      <button class="button-outline" type="submit">Submit</button>
+      <div v-if="showImageUrl" class="fcol cmp-value">
+        <label for="clickUrl">Click action: A page your user will be taken to once he clicks the notification</label>
+        <input
+          id="clickUrl"
+          type="text"
+          placeholder="https://yoursite.com/messages/3456"
+          v-model="form.clickUrl"
+          @blur="v$.clickUrl.$touch"
+          :class="{ error: v$.clickUrl.$errors.length }"
+        />
+        <p class="error-msg" v-if="v$.clickUrl.$errors">
+          {{ v$.clickUrl.$errors[0]?.$message }}
+        </p>
+      </div>
+      <div v-if="showImageUrl" class="fcol cmp-value">
+        <label for="data">Data: Extra information to be sent. Should be a json object</label>
+        <textarea
+          id="data"
+          :placeholder="dataholder"
+          v-model="form.data"
+          @blur="v$.data.$touch"
+          :class="{ error: v$.data.$errors.length }"
+        ></textarea>
+        <p class="error-msg" v-if="v$.data.$errors">
+          {{ v$.data.$errors[0]?.$message }}
+        </p>
+      </div>
+      <button class="button-outline" :disabled="isLoading" type="submit">Submit</button>
+      <p class="error-msg" v-if="errMsg">
+          {{ errMsg }}
+        </p>
     </form>
   </div>
 </template>
@@ -114,8 +190,7 @@ const submitForm = async () => {
 .compose-wrapper form {
   gap: 10px;
 }
-.cmp-value {
-}
+
 .cmp-value input {
   outline: none;
   padding: 10px 20px;
