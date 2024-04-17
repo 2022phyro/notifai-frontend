@@ -1,5 +1,5 @@
 <script setup>
-import { format } from 'date-fns'
+import { formatDate } from '@/utils/auth.js'
 const emit = defineEmits(['viewMsg', 'deleteMsg'])
 const props = defineProps({
   _id: String,
@@ -18,10 +18,6 @@ const deleteMsg = () => {
   emit('deleteMsg', props._id)
 }
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  return format(date, 'PPpp')
-}
 </script>
 <template>
   <article>

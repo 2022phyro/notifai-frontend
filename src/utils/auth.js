@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
+import { format } from 'date-fns'
 const BASE_URL = "http://localhost:3000/api/v1"
 const LEEWAY = 600000
 
@@ -51,8 +52,13 @@ const inst = async (auth) => {
 
   return instance;
 }
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return format(date, 'PPpp')
+}
 export {
     getToken,
     inst,
-    BASE_URL
+    BASE_URL,
+    formatDate
 }

@@ -1,11 +1,14 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import MessageItem from './MessageItem.vue'
 import FilterBoard from './FilterBoard.vue'
 import { inst, BASE_URL } from '@/utils/auth'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/app'
-
+const props = (defineProps({
+  del: String
+}))
+const del = computed(() => props.del)
 const { currApp } = storeToRefs(useAppStore())
 const messages = ref([])
 const isActive = ref(false)
@@ -20,42 +23,60 @@ const page = ref(1)
 const next = ref(null)
 const prev = ref(null)
 
-const fetchMessages = async (page) => {
-  if (!page) return
+const fetchMessages = async (pageNo, going) => {
+  if (!pageNo ||pageNo < 1) return
   const queryString = Object.keys(filters)
-    .filter((key) => filters[key] !== ''&& filters[key] !== null)
+    .filter((key) => filters[key] !== '' && filters[key] !== null)
     .map((key) => `${key}=${filters[key]}`)
     .join('&')
-    console.log(queryString)
   try {
     const instance = await inst(true)
-    const res = await instance.get(`${BASE_URL}/apps/${currApp.value._id}/notifications?page=${page}&${queryString}`)
+    const res = await instance.get(
+      `${BASE_URL}/apps/${currApp.value._id}/notifications?page=${pageNo}&${queryString}`
+    )
     const { data } = res.data
     console.log(data)
+    if (going === "next" && data.messages.length <= 0) {
+      next.value = null
+      return
+    }
     messages.value = data.messages
     next.value = data.next
     prev.value = data.prev
+    page.value = pageNo
   } catch (error) {
     console.error(error)
   }
 }
-const handleFilter = async( filterValues) => {
+const handleFilter = async (filterValues) => {
+  filters.status = ''
+  filters.read = null
+  filters.userId = ''
+  filters.retries = 0
   Object.assign(filters, filterValues)
   await fetchMessages(page.value)
 }
 const goNext = async () => {
-  await fetchMessages(next.value)
+  await fetchMessages(next.value, "next")
 }
 const goPrev = async () => {
   await fetchMessages(prev.value)
 }
 
-watch(currApp, async (newApp) => {
-  if (newApp && newApp._id ) {
-    await fetchMessages(page.value)
+watch(
+  currApp,
+  async (newApp) => {
+    if (newApp && newApp._id) {
+      await fetchMessages(page.value)
+    }
+  },
+  { immediate: true }
+)
+watch(del, async (newVal, oldVal) => {
+  if (newVal && newVal !== oldVal && newVal !== '') {
+    messages.value = messages.value.filter(message => message._id !== newVal)
   }
-}, { immediate: true })
-
+})
 
 const deleteMsg = (id) => {
   emit('deleteMsg', id)
@@ -73,7 +94,7 @@ const toggleActive = () => {
     <div class="message-filter" :class="{ active: !isActive }">
       <button class="button-outline filter" v-if="!isActive" @click="toggleActive">Filters</button>
       <fa-icon class="btn filter" :icon="['fa', 'xmark']" v-else @click="toggleActive" />
-      <FilterBoard @filter="handleFilter"/>
+      <FilterBoard @filter="handleFilter" />
     </div>
     <div class="message-wrapper">
       <MessageItem
@@ -85,9 +106,21 @@ const toggleActive = () => {
       />
     </div>
     <footer>
-      <fa-icon type="button" :disabled="prev" class="btn" :icon="['fas', 'chevron-left']" @click="goPrev"/>
-      1
-      <fa-icon type="button" :disabled="next" class="btn" :icon="['fas', 'chevron-right']" @click="goNext"/>
+      <fa-icon
+        type="button"
+        :disabled="prev"
+        class="btn"
+        :icon="['fas', 'chevron-left']"
+        @click="goPrev"
+      />
+      {{ page }}
+      <fa-icon
+        type="button"
+        :disabled="next"
+        class="btn"
+        :icon="['fas', 'chevron-right']"
+        @click="goNext"
+      />
     </footer>
   </div>
 </template>

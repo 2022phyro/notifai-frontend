@@ -4,7 +4,7 @@ import { onMounted } from 'vue'
 import { inst, BASE_URL } from '@/utils/auth'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/app'
-
+const emit = defineEmits(['newApp'])
 const route = useRoute()
 const appState = useAppStore()
 
@@ -21,7 +21,9 @@ onMounted(async () => {
     console.log(error)
   }
 })
-
+const newApp = () => {
+  emit('newApp')
+}
 const setApp = (app) => {
   setCurrApp(app)
 }
@@ -54,7 +56,7 @@ const setApp = (app) => {
       </li>
     </ul>
     <div class="footer">
-      <h3>Your Apps</h3>
+      <h3>Your Apps <fa-icon class="new-app btn" :icon="['far', 'circle-xmark']" @click="newApp"/></h3>
       <ul>
         <li v-for="app in apps" :key="app.id" class="btn" :class="{ current: app === currApp }" @click="setApp(app)">
           <fa-icon :icon="['fas', 'mobile-screen-button']" v-if="app === currApp"/>
@@ -161,9 +163,28 @@ const setApp = (app) => {
 }
 .footer h3 {
   color: white;
-  margin-left: 10px;
+  padding-left: 10px;
   margin-bottom: 10px;
   font-weight: 800px;
+  background: var(--primary);
+  display: flex;
+  position: sticky;
+  top: 0;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 30px;
+}
+.footer h3  .new-app {
+  transform: rotate(135deg);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.footer h3 .new-app:hover {
+  transform: rotate(135deg) scale(1.2);
+}
+.footer h3 .new-app:active {
+  opacity: 0.1;
 }
 .footer ul {
   list-style-type: none;
@@ -179,6 +200,9 @@ const setApp = (app) => {
   justify-content: flex-start;
   gap: 5px;
   margin-left: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   }
 .footer li.current {
    background-color: #00e9d1;
