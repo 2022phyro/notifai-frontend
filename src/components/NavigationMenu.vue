@@ -56,13 +56,16 @@ const setApp = (app) => {
       </li>
     </ul>
     <div class="footer">
-      <h3>Your Apps <fa-icon class="new-app btn" :icon="['far', 'circle-xmark']" @click="newApp"/></h3>
       <ul>
-        <li v-for="app in apps" :key="app.id" class="btn" :class="{ current: app === currApp }" @click="setApp(app)">
-          <fa-icon :icon="['fas', 'mobile-screen-button']" v-if="app === currApp"/>
-        {{ app.name }}
-      </li>
+        <li v-for="app in apps" :key="app.id" class="btn" @click="setApp(app)">{{ app.name }}</li>
       </ul>
+      <h3>
+        Your Apps <fa-icon class="new-app btn" :icon="['far', 'circle-xmark']" @click="newApp" />
+      </h3>
+      <p class="current">
+        <fa-icon :icon="['fas', 'mobile-screen-button']" />
+        {{ currApp.name }}
+      </p>
     </div>
   </div>
 </template>
@@ -175,7 +178,7 @@ const setApp = (app) => {
   align-items: center;
   padding-right: 30px;
 }
-.footer h3  .new-app {
+.footer h3 .new-app {
   transform: rotate(135deg);
   transition: all 0.3s ease;
   cursor: pointer;
@@ -189,7 +192,6 @@ const setApp = (app) => {
 .footer ul {
   list-style-type: none;
   font-weight: 800;
-
 }
 .footer li {
   width: 80%;
@@ -203,10 +205,14 @@ const setApp = (app) => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  }
-.footer li.current {
-   background-color: #00e9d1;
-   color: black;
-   margin-left: 0;
+}
+.footer .current {
+  background-color: #00e9d1;
+  color: black;
+  margin-left: 0;
+}
+.footer p {
+  padding-left: 15px;
+  margin-right: 15px;
 }
 </style>

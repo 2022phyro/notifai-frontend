@@ -101,3 +101,8 @@ input.error {
   font-size: 12px;
   color: red;
 }
+p span.red {
+  font-weight: 700;
+  color: red;
+  font-size: 18px;
+}

@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia'
 import { inst, BASE_URL } from '@/utils/auth'
 const appStore = useAppStore()
 const { currApp } = storeToRefs(appStore)
-const { addToApps, setCurrApp } = appStore
+const { addToApps, setCurrApp, removeFromApps } = appStore
 const popup = reactive({
   visible: false,
   type: null,
@@ -74,7 +74,6 @@ const handleNewApp = () => {
       const { data } = response.data
       setCurrApp(data)
       addToApps(data)
-      // console.log(data)
     } catch (error) {
       console.error(error)
     } finally {
@@ -91,9 +90,8 @@ const handleDeleteApp = (id, name) => {
   popup.callback = async () => {
     try {
       const instance = await inst(true)
-      await instance.delete(`${BASE_URL}/apps/${currApp.value._id}`)
-      addToApps(id, "remove")
-      // set.del = id
+      await instance.delete(`${BASE_URL}/apps/${id}`)
+      removeFromApps(id)
     } catch (error) {
       console.error(error)
     } finally {
@@ -105,6 +103,7 @@ const handleDeleteApp = (id, name) => {
 <template>
   <div class="dashboard">
     <NavigationMenu  @newApp="handleNewApp"/>
+    <header></header>
     <div class="body">
       <RouterView
         @showMsg="handleShowMsg"
@@ -121,10 +120,20 @@ const handleDeleteApp = (id, name) => {
 .body {
   position: absolute;
   left: 150px;
-  top: 0;
+  top: 50px;
   width: calc(100vw - 150px);
   height: 100vh;
   /* border: 1px solid red; */
   overflow: scroll;
+}
+header {
+  position: fixed;
+  left: 150px;
+  top: 0;
+  width: calc(100vw - 150px);
+  height: 50px;
+  background: var(--color-background);
+  box-shadow: 2px 1px 2px black;
+  z-index: 1;
 }
 </style>

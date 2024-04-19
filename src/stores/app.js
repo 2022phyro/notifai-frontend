@@ -11,16 +11,15 @@ export const useAppStore = defineStore('apps', () => {
   function setCurrApp(value) {
     currApp.value = value
   }
-  function addToApps(value, reason) {
-    if (reason && reason === 'remove') {
-      const newApps = apps.value.filter((app) => app.id !== value)
-      if (currApp.value.id === value) {
-        currApp.value = newApps[0] || {}
-      }
-      apps.value = newApps
-    } else {
-      apps.value.push(value)
-    }
+  function addToApps(value) {
+    apps.value.push(value)
   }
-  return { apps, currApp, setApps, setCurrApp, addToApps }
+  function removeFromApps(id) {
+    const newApps = apps.value.filter((app) => app._id !== id)
+    if (currApp.value._id === id) {
+      currApp.value = newApps[0] || {}
+    }
+    apps.value = newApps
+  }
+  return { apps, currApp, setApps, setCurrApp, addToApps,removeFromApps }
 })

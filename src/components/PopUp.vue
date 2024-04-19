@@ -9,15 +9,17 @@ const props = defineProps({
 })
 const type = computed(() => props.type)
 
+const message = computed(() =>
+  props.type === 'deleteApp'
+    ? `Type in the name <span class="red">${props.args[0]}</span>. Note this action is irreversible and you will lose all data associated with <span class="red">${props.args[0]}</span>`
+    : 'Enter the name of the new app your want'
+)
 const appName = ref('') // New ref for the app name
 const appNameError = ref('') // New ref for the app name error message
 
-const validateAppName = (val) => {
+const validateAppName = () => {
   const pattern = /^[a-zA-Z][a-zA-Z0-9-]*$/
-  if (val && appName.value !== val) {
-    appNameError.value = "The value you entered isn't the name of the app"
-  }
-  else if (!appName.value) {
+  if (!appName.value) {
     appNameError.value = 'App name is required'
   } else if (!pattern.test(appName.value)) {
     appNameError.value =
@@ -27,12 +29,21 @@ const validateAppName = (val) => {
   }
 }
 
-const handleCallback = () => {
-  let value;
-  if (props.type == "deleteApp") value = props.args[0]
-  validateAppName(value)
-  if (!appNameError.value) {
-    props.callback(appName.value)
+const handleCallback = async () => {
+  try {
+    if (props.type == 'deleteApp') {
+      if (props.args[0] && appName.value !== props.args[0]) {
+        appNameError.value = "The value you entered isn't the name of the app"
+      }
+    }
+    if (!appNameError.value) {
+      await props.callback(appName.value)
+    }
+  } catch (error) {
+    console.error(error)
+  } finally {
+    appName.value = ''
+    appNameError.value = ''
   }
 }
 const emit = defineEmits(['closePopUp', 'pFormSuccess', 'nFormSuccess', 'dFormSuccess'])
@@ -106,8 +117,13 @@ const close = () => {
         <p><span class="label">Data: </span>{{ JSON.stringify(notification.data, null, 2) }}</p>
       </div>
       <div class="manage-app" v-else-if="['newApp', 'deleteApp'].includes(props.type)">
-        <p>{{ props.type === "deleteApp" ? `Type in the name ${props.args[0]}. Note this action is irreversible and you will lose all data associated with it`: "Enter the name of the new app your want"}}</p>
-        <input :class="{error: appNameError }" type="text" v-model="appName" @input="validateAppName" />
+        <p v-html="message"></p>
+        <input
+          :class="{ error: appNameError }"
+          type="text"
+          v-model="appName"
+          @input="validateAppName"
+        />
         <p class="error-msg" v-if="appNameError">{{ appNameError }}</p>
         <div class="buttons">
           <button class="button-outline" @click="close">Cancel</button>
@@ -141,11 +157,7 @@ const close = () => {
   align-items: center;
   z-index: 1;
 }
-.red {
-  font-weight: 800;
-  color: red;
-  font-size: 18px;
-}
+
 .popup-body {
   max-width: 500px;
   max-height: 500px;
