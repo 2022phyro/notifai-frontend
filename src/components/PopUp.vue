@@ -43,7 +43,7 @@ const handleCallback = async () => {
     console.error(error)
   } finally {
     appName.value = ''
-    appNameError.value = ''
+    // appNameError.value = ''
   }
 }
 const emit = defineEmits(['closePopUp', 'pFormSuccess', 'nFormSuccess', 'dFormSuccess'])

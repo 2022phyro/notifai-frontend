@@ -18,7 +18,10 @@ import {
   faSearch,
   faMobileScreenButton,
   faKey,
-  faChevronDown
+  faChevronDown,
+  faCaretDown,
+  faCaretUp,
+  faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
 import { faEye, faTrashCan, faEyeSlash, faCopy, faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 library.add({
@@ -40,7 +43,10 @@ library.add({
   faChevronDown,
   faMobileScreenButton,
   faCopy,
-  faCircleXmark
+  faCircleXmark,
+  faCaretDown,
+  faCaretUp,
+  faMagnifyingGlass
 })
 import App from './App.vue'
 import router from './router'

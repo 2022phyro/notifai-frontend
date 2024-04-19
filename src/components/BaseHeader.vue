@@ -4,8 +4,8 @@ import { RouterLink } from 'vue-router'
 <template>
   <header>
     <RouterLink to="/" class="logo">
-      <img alt="Vue logo" src="@/assets/logo.png" width="125" height="125" />
-      <span>Notifai</span>
+      <img alt="Vue logo" src="/logo.png" width="125" height="125" />
+      <span>NotifAI</span>
     </RouterLink>
     <div class="wrapper">
       <RouterLink to="/auth/" class="a-button-outline">Login</RouterLink>
@@ -15,38 +15,38 @@ import { RouterLink } from 'vue-router'
 </template>
 <style scoped>
 header {
-  width: 100%;
-  height: 60px;
-  background: var(--primary);
   position: fixed;
+  left: 0px;
   top: 0;
+  font-family: var(--title-font);
+  width: calc(100vw - 0px);
+  height: 50px;
+  background: var(--color-background);
+  box-shadow: 2px 1px 2px black;
+  z-index: 1;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  box-sizing: border-box;
-  box-shadow: 4px 1px 4px #000;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
   align-items: center;
+  overflow: visible;
 }
 .logo {
-  position: absolute;
-  left: 30px;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  color: white;
-  font-size: 30px;
-  font-weight: 500;
-  font-family: var(--title-font);
-  font-weight: 400;
+  /* margin-top: 20px; */
+  align-self: center;
+  color: var(--primary);
+  font-size: 24px;
+  font-weight: 600px;
   gap: 10px;
+  padding-left: 20px;
+}
+header a {
+  height: 30px;
 }
 .logo img {
   width: 30px;
   height: 30px;
-  margin: none;
-  margin-top: 1px;
+  border: 1px solid var(--primary);
+  border-radius: 50%;
 }
 .wrapper {
   position: absolute;

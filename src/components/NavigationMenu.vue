@@ -1,39 +1,16 @@
 <script setup>
 import { RouterLink, useRoute } from 'vue-router'
-import { onMounted } from 'vue'
-import { inst, BASE_URL } from '@/utils/auth'
-import { storeToRefs } from 'pinia'
-import { useAppStore } from '@/stores/app'
+
 const emit = defineEmits(['newApp'])
 const route = useRoute()
-const appState = useAppStore()
 
-const { currApp, apps } = storeToRefs(appState)
-const { setApps, setCurrApp } = appState
-
-onMounted(async () => {
-  try {
-    const instance = await inst(true)
-    const response = await instance.get(`${BASE_URL}/apps`)
-    setApps(response.data.data)
-    setCurrApp(apps.value[0])
-  } catch (error) {
-    console.log(error)
-  }
-})
 const newApp = () => {
   emit('newApp')
 }
-const setApp = (app) => {
-  setCurrApp(app)
-}
+
 </script>
 <template>
   <div class="navigation">
-    <RouterLink to="/" class="logo">
-      <img alt="Vue logo" src="@/assets/logo.png" width="125" height="125" />
-      <span>Notifai</span>
-    </RouterLink>
     <ul class="nav-wrapper">
       <li :class="['nav-item', { active: route.path === '/dashboard' }]">
         <RouterLink to="/dashboard"><fa-icon :icon="['fas', 'house']" />Home</RouterLink>
@@ -56,26 +33,19 @@ const setApp = (app) => {
       </li>
     </ul>
     <div class="footer">
-      <ul>
-        <li v-for="app in apps" :key="app.id" class="btn" @click="setApp(app)">{{ app.name }}</li>
-      </ul>
-      <h3>
-        Your Apps <fa-icon class="new-app btn" :icon="['far', 'circle-xmark']" @click="newApp" />
+      <h3 class="btn"  @click="newApp" >
+        Add a new app <fa-icon class="new-app" :icon="['far', 'circle-xmark']"/>
       </h3>
-      <p class="current">
-        <fa-icon :icon="['fas', 'mobile-screen-button']" />
-        {{ currApp.name }}
-      </p>
     </div>
   </div>
 </template>
 <style scoped>
 .navigation {
   position: fixed;
-  top: 0;
+  top: 50px;
   left: 0;
   width: 150px;
-  height: 100vh;
+  height: calc(100vh - 50px);
   background: var(--primary);
   display: flex;
   flex-flow: column wrap;
@@ -158,61 +128,34 @@ const setApp = (app) => {
   bottom: 30px;
   padding: 10px 0;
   width: 100%;
-  height: 150px;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  color: white;
   overflow-y: auto;
 }
 .footer h3 {
   color: white;
-  padding-left: 10px;
-  margin-bottom: 10px;
   font-weight: 800px;
   background: var(--primary);
   display: flex;
   position: sticky;
+  width: 80%;
+  margin-left: 15px;
   top: 0;
   flex-flow: row;
+  font-size: 15px;
   justify-content: space-between;
   align-items: center;
-  padding-right: 30px;
+  border: 1px solid white;
+  cursor: pointer;
+  padding: 5px 5px;
 }
 .footer h3 .new-app {
   transform: rotate(135deg);
   transition: all 0.3s ease;
-  cursor: pointer;
 }
-.footer h3 .new-app:hover {
-  transform: rotate(135deg) scale(1.2);
-}
-.footer h3 .new-app:active {
+
+.footer h3:active {
   opacity: 0.1;
 }
-.footer ul {
-  list-style-type: none;
-  font-weight: 800;
-}
-.footer li {
-  width: 80%;
-  padding: 0px 0px 0 10px;
-  display: flex;
-  flex-flow: row gap;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 5px;
-  margin-left: 15px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.footer .current {
-  background-color: #00e9d1;
-  color: black;
-  margin-left: 0;
-}
-.footer p {
-  padding-left: 15px;
-  margin-right: 15px;
+.footer h3:hover {
+  transform: scale(1.1);
 }
 </style>

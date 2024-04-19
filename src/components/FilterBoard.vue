@@ -128,6 +128,9 @@ input[type='number'] {
   border: 1px solid #ccc;
   padding: 4px 10px;
 }
+input[type='text'] {
+  width: 100%;
+}
 input[type='radio'] {
   display: none;
   padding: 0;
