@@ -23,7 +23,7 @@ import {
   faCaretUp,
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
-import { faEye, faTrashCan, faEyeSlash, faCopy, faCircleXmark } from '@fortawesome/free-regular-svg-icons'
+import { faEye, faTrashCan, faEyeSlash, faCopy, faCircleXmark, faSquarePlus } from '@fortawesome/free-regular-svg-icons'
 library.add({
   faHouse,
   faGear,
@@ -46,7 +46,8 @@ library.add({
   faCircleXmark,
   faCaretDown,
   faCaretUp,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faSquarePlus
 })
 import App from './App.vue'
 import router from './router'

@@ -31,12 +31,10 @@ const newApp = () => {
       <li :class="['nav-item', { active: route.path === '/dashboard/docs' }]">
         <RouterLink to="/dashboard/docs"><fa-icon :icon="['fas', 'book-open']" />Docs</RouterLink>
       </li>
+      <li class="nav-item">
+        <div class="new-app" @click="newApp"><fa-icon :icon="['far', 'square-plus']"/> New App</div>
+      </li>
     </ul>
-    <div class="footer">
-      <h3 class="btn"  @click="newApp" >
-        Add a new app <fa-icon class="new-app" :icon="['far', 'circle-xmark']"/>
-      </h3>
-    </div>
   </div>
 </template>
 <style scoped>
@@ -46,10 +44,12 @@ const newApp = () => {
   left: 0;
   width: 150px;
   height: calc(100vh - 50px);
-  background: var(--primary);
+  background: var(--color-background);
   display: flex;
   flex-flow: column wrap;
+  border-right: 1px solid #ccc;
   justify-content: flex-start;
+  box-shadow: 10px 0 15px -10px rgba(0, 0, 0, 0.1); /* Add this line */
 }
 .nav-wrapper {
   display: flex;
@@ -67,32 +67,40 @@ const newApp = () => {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
+  align-items: center;
   cursor: pointer;
-  color: white;
+  color: black;
   padding-left: 15px;
   transition: all 0.4s ease;
 }
 
-.nav-item a {
+.nav-item a, .new-app {
   width: 80%;
   height: 100%;
+  display: flex;
   text-align: left;
   justify-content: flex-start;
   padding-left: 8px;
   gap: 10px;
   align-items: center;
   font-size: 13px;
-  color: white;
+  color: black;
+}
+.new-app svg {
+  font-size: 16px;
 }
 .nav-item a:hover,
+.new-app:hover,
 .active .router-link-active {
-  background: #00e9d1;
-  color: black;
+  background: var(--primary);
+  color: white;
   font-weight: 600;
   border-radius: 4px;
   transition: all 0.4s ease;
+  cursor: pointer;
 }
-.nav-item a:active {
+.nav-item a:active,
+.nav-item .new-app:active {
   transform: scale(0.9);
 }
 .active {
@@ -105,43 +113,8 @@ const newApp = () => {
   left: 0;
   width: 4px;
   height: 35px;
-  background-color: #00e9d1; /* Replace #color with the color you want */
+  background-color: var(--primary); /* Replace #color with the color you want */
   border-radius: 10px;
   transform: translateY(-50%);
-}
-.footer {
-  position: absolute;
-  bottom: 30px;
-  padding: 10px 0;
-  width: 100%;
-  overflow-y: auto;
-}
-.footer h3 {
-  color: white;
-  font-weight: 800px;
-  background: var(--primary);
-  display: flex;
-  position: sticky;
-  width: 80%;
-  margin-left: 15px;
-  top: 0;
-  flex-flow: row;
-  font-size: 15px;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid white;
-  cursor: pointer;
-  padding: 5px 5px;
-}
-.footer h3 .new-app {
-  transform: rotate(135deg);
-  transition: all 0.3s ease;
-}
-
-.footer h3:active {
-  opacity: 0.1;
-}
-.footer h3:hover {
-  transform: scale(1.1);
 }
 </style>

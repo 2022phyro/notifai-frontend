@@ -12,10 +12,7 @@
   </div>
 </template>
 <style scoped>
-.pri {
-  color: var(--primary);
-  font-weight: 600;
-}
+
 .api-key {
   display: flex;
   flex-flow: column;
@@ -56,10 +53,5 @@
 .decide button:hover {
   font-weight: 600;
 }
-.i {
-    font-style: italic;
-}
-.b {
-    font-weight: 600;
-}
+
 </style>

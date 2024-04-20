@@ -46,6 +46,6 @@ import ApiKey from './ApiKey.vue';
     background: #ececec;
 }
 .red {
-    background: #e98888;
+    background: #eea6a6;
 }
 </style>

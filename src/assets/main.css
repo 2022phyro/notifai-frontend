@@ -106,3 +106,13 @@ p span.red {
   color: red;
   font-size: 18px;
 }
+.i {
+  font-style: italic;
+}
+.b {
+  font-weight: 600;
+}
+.pri {
+  color: var(--primary);
+  font-weight: 600;
+}
