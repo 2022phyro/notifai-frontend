@@ -130,11 +130,10 @@ const submitForm = async () => {
           {{ v$.body.$errors[0]?.$message }}
         </p>
       </div>
-      <h2 class="extras btn" @click="showImageUrl = !showImageUrl">
-        <fa-icon :icon="['fa', !showImageUrl ? 'chevron-right' : 'chevron-down']" />Extras
+      <h2 class="extras  b pri" @click="showImageUrl = !showImageUrl">
+        <fa-icon :icon="['fas', !showImageUrl ? 'caret-right' : 'caret-down']" />Extras
       </h2>
-
-      <div v-if="showImageUrl" class="fcol cmp-value">
+      <div v-if="showImageUrl" class="fcol cmp-value ex ey">
         <label for="icon">Icon URL:</label>
         <input
           id="icon"
@@ -148,7 +147,7 @@ const submitForm = async () => {
           {{ v$.icon.$errors[0]?.$message }}
         </p>
       </div>
-      <div v-if="showImageUrl" class="fcol cmp-value">
+      <div v-if="showImageUrl" class="fcol cmp-value ex">
         <label for="clickUrl">Click action: A page your user will be taken to once he clicks the notification</label>
         <input
           id="clickUrl"
@@ -162,7 +161,7 @@ const submitForm = async () => {
           {{ v$.clickUrl.$errors[0]?.$message }}
         </p>
       </div>
-      <div v-if="showImageUrl" class="fcol cmp-value">
+      <div v-if="showImageUrl" class="fcol cmp-value ex">
         <label for="data">Data: Extra information to be sent. Should be a json object</label>
         <textarea
           id="data"
@@ -201,7 +200,7 @@ const submitForm = async () => {
   width: 500px;
   height: 100px;
   padding: 10px 20px;
-  font-family: var(--body-font2);
+  font-family: var(--title-font);
   outline: none;
   border: 1px solid #ccc;
   resize: none;
@@ -210,16 +209,25 @@ const submitForm = async () => {
   border-color: red;
 }
 .extras {
-  color: var(--primary);
-  font-weight: 600;
   display: flex;
   flex-flow: row;
   align-items: center;
-  font-size: 22px;
+	padding: 0;
+  font-size: 16px;
   gap: 6px;
   cursor: pointer;
+	z-index: 0;
 }
-.extras svg {
-  font-size: 14px;
+.cmp-value.ex {
+  border-left: 2px solid var(--primary);
+  margin-top: -10px;
+  padding-top: 10px;
+  padding-left: 10px;
+  margin-left: 4.5px;
+}
+
+.cmp-value.ey {
+  margin-top: -20px;
+  padding-top: 15px;
 }
 </style>

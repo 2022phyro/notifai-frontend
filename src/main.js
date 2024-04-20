@@ -20,6 +20,7 @@ import {
   faKey,
   faChevronDown,
   faCaretDown,
+  faCaretRight,
   faCaretUp,
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
@@ -45,6 +46,7 @@ library.add({
   faCopy,
   faCircleXmark,
   faCaretDown,
+  faCaretRight,
   faCaretUp,
   faMagnifyingGlass,
   faSquarePlus
