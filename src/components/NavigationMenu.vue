@@ -25,11 +25,11 @@ const newApp = () => {
           ><fa-icon :icon="['fas', 'gear']" />Settings</RouterLink
         >
       </li>
-      <li :class="['nav-item', { active: route.path === '/dashboard/docs' }]">
-        <RouterLink to="/dashboard/docs"><fa-icon :icon="['fas', 'book-open']" />Docs</RouterLink>
+      <li :class="['nav-item', { active: route.path === '/dashboard/keys' }]">
+        <RouterLink to="/dashboard/keys"><fa-icon :icon="['fas', 'key']" />API Keys</RouterLink>
       </li>
       <li :class="['nav-item', { active: route.path === '/dashboard/docs' }]">
-        <RouterLink to="/dashboard/docs"><fa-icon :icon="['fas', 'key']" />API Keys</RouterLink>
+        <RouterLink to="/dashboard/docs"><fa-icon :icon="['fas', 'book-open']" />Docs</RouterLink>
       </li>
     </ul>
     <div class="footer">
@@ -51,19 +51,6 @@ const newApp = () => {
   flex-flow: column wrap;
   justify-content: flex-start;
 }
-.logo {
-  margin-top: 20px;
-  align-self: flex-start;
-  color: white;
-  font-size: 24px;
-  font-weight: 600px;
-  gap: 10px;
-  padding-left: 20px;
-}
-.logo img {
-  width: 30px;
-  height: 30px;
-}
 .nav-wrapper {
   display: flex;
   flex-flow: column nowrap;
@@ -75,15 +62,14 @@ const newApp = () => {
 }
 
 .nav-item {
-  /* border: 1px solid red; */
   width: 100%;
-  height: 40px;
+  height: 35px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   cursor: pointer;
   color: white;
-  padding-left: 20px;
+  padding-left: 15px;
   transition: all 0.4s ease;
 }
 
@@ -92,10 +78,10 @@ const newApp = () => {
   height: 100%;
   text-align: left;
   justify-content: flex-start;
-  padding-left: 10px;
+  padding-left: 8px;
   gap: 10px;
   align-items: center;
-  font-size: 16px;
+  font-size: 13px;
   color: white;
 }
 .nav-item a:hover,
@@ -117,8 +103,8 @@ const newApp = () => {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 5px;
-  height: 40px;
+  width: 4px;
+  height: 35px;
   background-color: #00e9d1; /* Replace #color with the color you want */
   border-radius: 10px;
   transform: translateY(-50%);

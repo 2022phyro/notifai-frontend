@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import SignupView from '@/components/AuthSignup.vue'
 import MessageBoard from '@/components/MessageBoard.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,7 +59,12 @@ const router = createRouter({
         {
           path: 'docs',
           name: 'dbDocs',
-          component: SignupView
+          component: () => import ('../components/KeysBoard.vue')
+        },
+        {
+          path: 'keys',
+          name: 'dbKeys',
+          component: () => import ('../components/KeysBoard.vue')
         }
       ]
     }

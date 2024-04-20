@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
 :root {
   --vt-c-white: #fff;
   --vt-c-white-soft: #f8f8f8;
@@ -35,7 +35,7 @@
 
   --section-gap: 160px;
 
-  --title-font: 'Grenze';
+  --title-font: 'Mulish';
   --body-font1: 'Roboto';
   --body-font2: 'IBM Plex Sans', sans-serif;
   --primary: #029686;
@@ -73,6 +73,7 @@ body {
     background-color 0.5s;
   line-height: 1.6;
   font-family:
+    'Mulish',
     'Grenze',
     Inter,
     -apple-system,

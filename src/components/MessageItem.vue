@@ -47,6 +47,7 @@ article {
   display: flex;
   justify-content: flex-start;
   flex-flow: row nowrap;
+  font-size: 13px;
 }
 article > .part {
   display: flex;

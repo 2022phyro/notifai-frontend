@@ -166,7 +166,7 @@ const closeApps = () => {
   width: calc(100vw - 150px);
   height: calc(100vh - 50px);
   /* border: 1px solid red; */
-  overflow: scroll;
+  overflow: auto;
 }
 header {
   position: fixed;
