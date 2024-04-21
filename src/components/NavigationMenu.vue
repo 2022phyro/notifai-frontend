@@ -92,7 +92,7 @@ const newApp = () => {
 .nav-item a:hover,
 .new-app:hover,
 .active .router-link-active {
-  background: var(--primary);
+  background: var(--bg-pri);
   color: white;
   font-weight: 600;
   border-radius: 4px;
@@ -113,7 +113,7 @@ const newApp = () => {
   left: 0;
   width: 4px;
   height: 35px;
-  background-color: var(--primary); /* Replace #color with the color you want */
+  background: var(--bg-pri); /* Replace #color with the color you want */
   border-radius: 10px;
   transform: translateY(-50%);
 }

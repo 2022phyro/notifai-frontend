@@ -126,8 +126,8 @@ const close = () => {
         />
         <p class="error-msg" v-if="appNameError">{{ appNameError }}</p>
         <div class="buttons">
-          <button class="button-outline" @click="close">Cancel</button>
-          <button class="button-outline danger-outline" @click="handleCallback">
+          <button class="b-pri" @click="close">Cancel</button>
+          <button class="b-danger" @click="handleCallback">
             {{ allMessages[props.type][1] }}
           </button>
         </div>
@@ -135,8 +135,8 @@ const close = () => {
       <div class="decision" v-else>
         <p>{{ allMessages[props.type][0] }}</p>
         <div class="buttons">
-          <button class="button-outline" @click="close">Cancel</button>
-          <button class="button-outline danger-outline" @click="props.callback">
+          <button class="b-pri" @click="close">Cancel</button>
+          <button class="b-danger" @click="props.callback">
             {{ allMessages[props.type][1] }}
           </button>
         </div>

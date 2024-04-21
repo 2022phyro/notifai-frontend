@@ -5,9 +5,9 @@ import FilterBoard from './FilterBoard.vue'
 import { inst, BASE_URL } from '@/utils/auth'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/app'
-const props = (defineProps({
+const props = defineProps({
   del: String
-}))
+})
 const del = computed(() => props.del)
 const { currApp } = storeToRefs(useAppStore())
 const messages = ref([])
@@ -24,7 +24,7 @@ const next = ref(null)
 const prev = ref(null)
 
 const fetchMessages = async (pageNo, going) => {
-  if (!pageNo ||pageNo < 1) return
+  if (!pageNo || pageNo < 1) return
   const queryString = Object.keys(filters)
     .filter((key) => filters[key] !== '' && filters[key] !== null)
     .map((key) => `${key}=${filters[key]}`)
@@ -36,7 +36,7 @@ const fetchMessages = async (pageNo, going) => {
     )
     const { data } = res.data
     console.log(data)
-    if (going === "next" && data.messages.length <= 0) {
+    if (going === 'next' && data.messages.length <= 0) {
       next.value = null
       return
     }
@@ -57,7 +57,7 @@ const handleFilter = async (filterValues) => {
   await fetchMessages(page.value)
 }
 const goNext = async () => {
-  await fetchMessages(next.value, "next")
+  await fetchMessages(next.value, 'next')
 }
 const goPrev = async () => {
   await fetchMessages(prev.value)
@@ -74,7 +74,7 @@ watch(
 )
 watch(del, async (newVal, oldVal) => {
   if (newVal && newVal !== oldVal && newVal !== '') {
-    messages.value = messages.value.filter(message => message._id !== newVal)
+    messages.value = messages.value.filter((message) => message._id !== newVal)
   }
 })
 
@@ -92,7 +92,7 @@ const toggleActive = () => {
 <template>
   <div>
     <div class="message-filter" :class="{ active: !isActive }">
-      <button class="button-outline filter" v-if="!isActive" @click="toggleActive">Filters</button>
+      <button class="b-pri filter" v-if="!isActive" @click="toggleActive">Filters</button>
       <fa-icon class="btn filter" :icon="['fa', 'xmark']" v-else @click="toggleActive" />
       <FilterBoard @filter="handleFilter" />
     </div>

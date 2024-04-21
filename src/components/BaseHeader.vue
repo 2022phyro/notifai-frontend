@@ -8,8 +8,8 @@ import { RouterLink } from 'vue-router'
       <span>NotifAI</span>
     </RouterLink>
     <div class="wrapper">
-      <RouterLink to="/auth/" class="a-button-outline">Login</RouterLink>
-      <RouterLink to="/auth/signup" class="a-button-outline">Sign Up</RouterLink>
+      <RouterLink to="/auth/" class="b-pri">Login</RouterLink>
+      <RouterLink to="/auth/signup" class="b-pri">Sign Up</RouterLink>
     </div>
   </header>
 </template>

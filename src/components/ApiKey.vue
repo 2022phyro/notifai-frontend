@@ -5,14 +5,13 @@
     <div class="decide">
       <p>Expiring <span class="b i">Friday, March 15 2024</span></p>
       <div>
-        <button class="danger-outline button-outline">Revoke</button>
-        <button class="danger-outline button-outline">Delete</button>
+        <button class="b-sec">Revoke</button>
+        <button class="b-danger">Delete</button>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
-
 .api-key {
   display: flex;
   flex-flow: column;
@@ -47,11 +46,10 @@
 }
 .decide button {
   font-size: 12px;
-  padding: 0px 8px;
-  font-weight: 600;
+  padding: 8px 10px;
+	font-weight: 300;
 }
-.decide button:hover {
-  font-weight: 600;
-}
-
+/* .decide button:hover {
+  font-weight: 500;
+} */
 </style>

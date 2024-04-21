@@ -242,6 +242,7 @@ header {
 .apps ul input{
   width: 90%;
   font-size: 13px;
+  font-weight: 300;
   border: none;
   padding: 0;
 }
@@ -266,6 +267,8 @@ header {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  font-size: 13px;
+  font-weight: 300;
   gap: 5px;
 }
 .apps ul li:hover {
@@ -276,7 +279,7 @@ header {
 .apps ul li.curr {
   margin-left: 10px;
   transform: scale(1.1);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--primary);
 }
 </style>

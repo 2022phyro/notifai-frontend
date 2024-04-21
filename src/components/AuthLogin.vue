@@ -6,7 +6,6 @@ import { useVuelidate } from '@vuelidate/core'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 
-
 const pwdSeen = ref(true)
 const isLoading = ref(false)
 const lgError = ref(null)
@@ -105,7 +104,7 @@ const handleSubmit = async () => {
           {{ v$.password.$errors[0]?.$message }}
         </div>
       </div>
-      <button type="submit" :disabled="isLoading" class="button-outline to-db">Login</button>
+      <button type="submit" :disabled="isLoading" class="b-pri to-db">Login</button>
       <div class="error-msg" v-if="lgError">
         {{ lgError }}
       </div>

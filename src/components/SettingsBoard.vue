@@ -10,7 +10,7 @@ const copyMessage = ref('')
 const { currApp } = storeToRefs(appState)
 
 const deleteApp = () => {
-    emit('deleteApp', currApp.value._id, currApp.value.name)
+  emit('deleteApp', currApp.value._id, currApp.value.name)
 }
 const textToCopy = computed(() => {
   const { created, ...rest } = currApp.value
@@ -26,23 +26,26 @@ onMounted(() => {
     }, 1000)
   })
 })
-
 </script>
 <template>
   <div class="app-settings-wrapper">
     <h3 class="pri b">Client Credentials</h3>
     <div class="cpy-area">
-    <div class="copyAlert">
-      <fa-icon :class="['copy']" :icon="['far', 'copy']" title="Copy your client info" />
-      <p v-if="copyMessage">{{ copyMessage }}</p>
+      <div class="copyAlert">
+        <fa-icon :class="['copy']" :icon="['far', 'copy']" title="Copy your client info" />
+        <p v-if="copyMessage">{{ copyMessage }}</p>
       </div>
-      <textarea class="copy-area" :value="JSON.stringify(textToCopy, null, 4)" id="clientCred" readonly>
+      <textarea
+        class="copy-area"
+        :value="JSON.stringify(textToCopy, null, 4)"
+        id="clientCred"
+        readonly
+      >
       </textarea>
     </div>
     <div class="delete">
-      <button class="button-outline danger-outline" @click="deleteApp">Delete this app</button> 
+      <button class="b-danger" @click="deleteApp">Delete this app</button>
     </div>
-
   </div>
   <!-- <div class="app-settings-wrapper">
     <AppItem v-for="(app, index) in apps" v-bind="app" :key="index" @deleteApp="handleDeleteApp"/>
@@ -50,34 +53,32 @@ onMounted(() => {
 </template>
 <style scoped>
 .app-settings-wrapper {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 30px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 30px;
 }
 .cpy-area {
-  background-color: #f5f5f5; 
-  border: 1px solid #ccc; 
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
   padding: 20px;
-  overflow-x: auto; 
-  border-radius: 5px; 
+  overflow-x: auto;
+  border-radius: 5px;
   position: relative;
-
 }
 .copy-area {
   display: block;
   height: 150px;
   width: 400px;
-  font-family: 'Consolas', monospace; 
-  white-space: pre; 
+  font-family: 'Consolas', monospace;
+  white-space: pre;
   position: relative;
   border: none;
   background: inherit;
   resize: none;
   outline: none;
-
 }
 .copyAlert {
   position: relative;
@@ -87,8 +88,8 @@ onMounted(() => {
   align-items: flex-end;
 }
 .copyAlert p {
-  position: absolute; 
-  top: -20px; 
+  position: absolute;
+  top: -20px;
   right: 0;
   background: grey;
   color: white;

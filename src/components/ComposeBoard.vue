@@ -174,7 +174,7 @@ const submitForm = async () => {
           {{ v$.data.$errors[0]?.$message }}
         </p>
       </div>
-      <button class="button-outline" :disabled="isLoading" type="submit">Submit</button>
+      <button class="b-pri" :disabled="isLoading" type="submit">Submit</button>
       <p class="error-msg" v-if="errMsg">
           {{ errMsg }}
         </p>

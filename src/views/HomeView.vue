@@ -14,7 +14,7 @@ import Header from '@/components/BaseHeader.vue'
         your messaging game, we've got the tools you need to stand out. Join the notification
         revolution and let's turn up the engagement together!"
       </p>
-      <RouterLink to="/auth/signup" class="a-button-outline cta">Get started</RouterLink>
+      <RouterLink to="/auth/signup" class="b-pri cta">Get started</RouterLink>
     </div>
     <img class="images" src="/dashboard.jpg" />
   </main>

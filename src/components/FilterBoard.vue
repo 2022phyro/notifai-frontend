@@ -36,10 +36,10 @@ const search = () => {
 <template>
   <div class="filter-bar">
     <div class="reset main">
-      <div class="reset button-outline" @click="resetAll">
+      <div class="reset b-pri" @click="resetAll">
         <fa-icon :icon="['fa', 'rotate-right']" /> Reset all
       </div>
-      <div class="reset button-outline" @click="search"><fa-icon :icon="['fa', 'search']" /></div>
+      <div class="reset b-pri" @click="search"><fa-icon :icon="['fa', 'search']" /></div>
     </div>
     <div class="status option">
       <h2>STATUS</h2>

@@ -6,7 +6,6 @@ import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import { inst, BASE_URL } from '@/utils/auth'
 
-
 const isLoading = ref(false)
 const lgError = ref(null)
 const authStore = useAuthStore()
@@ -61,7 +60,7 @@ const handleSubmit = async () => {
     } else {
       const instance = await inst()
       instance()
-      .post(`${BASE_URL}/signup`, form)
+        .post(`${BASE_URL}/signup`, form)
         .then((response) => {
           console.log(response.data)
           const result = response.data.data
@@ -129,14 +128,18 @@ const handleSubmit = async () => {
       <div class="auth-form-obj">
         <label for="password">Password:</label>
         <input
-          :type="!pwdSeen? 'text':'password'"
+          :type="!pwdSeen ? 'text' : 'password'"
           id="password"
           v-model="form.password"
           @blur="v$.password.$touch"
           :class="{ error: v$.password.$errors.length }"
         />
-        
-        <fa-icon class="pwd-seen" :icon="['far', pwdSeen?'eye': 'eye-slash']" @click="() => pwdSeen =!pwdSeen"/>
+
+        <fa-icon
+          class="pwd-seen"
+          :icon="['far', pwdSeen ? 'eye' : 'eye-slash']"
+          @click="() => (pwdSeen = !pwdSeen)"
+        />
         <div class="error-msg" v-if="v$.password.$errors">
           {{ v$.password.$errors[0]?.$message }}
         </div>
@@ -156,9 +159,9 @@ const handleSubmit = async () => {
         </div>
       </div>
 
-      <button type="submit" :disabled="isLoading" class="button-outline to-db">Sign Up</button>
+      <button type="submit" :disabled="isLoading" class="b-pri to-db">Sign Up</button>
       <div class="error-msg" v-if="lgError">
-          {{ lgError }}
+        {{ lgError }}
       </div>
     </form>
   </div>

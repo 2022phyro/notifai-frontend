@@ -38,7 +38,10 @@
   --title-font: 'Mulish';
   --body-font1: 'Roboto';
   --body-font2: 'IBM Plex Sans', sans-serif;
-  --primary: #029686;
+  /* --primary: #029686; */
+  --bg-pri: linear-gradient(45deg, lightblue, navy);
+  --primary: rgb(103, 103, 214);
+	--pri-plain: rgb(41, 41, 204);
 }
 
 @media (prefers-color-scheme: dark) {
