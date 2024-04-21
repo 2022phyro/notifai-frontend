@@ -172,7 +172,7 @@ footer > svg {
 }
 .filter {
   position: absolute;
-  font-size: 20px;
+  font-size: 13px;
   top: 20px;
   left: -30px;
 }

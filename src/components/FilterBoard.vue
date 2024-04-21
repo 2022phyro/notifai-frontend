@@ -35,7 +35,7 @@ const search = () => {
 </script>
 <template>
   <div class="filter-bar">
-    <div class="reset main">
+    <div class="reset-main">
       <div class="reset b-pri" @click="resetAll">
         <fa-icon :icon="['fa', 'rotate-right']" /> Reset all
       </div>
@@ -86,20 +86,16 @@ const search = () => {
 .filter-bar {
   padding: 20px;
   padding-top: 60px;
-  /* font-family: var(--body-font1); */
 }
 .reset {
-  font-size: 14px;
-  /* font-family: var(--body-font1); */
+  font-size: 12px;
   display: flex;
   gap: 10px;
   align-items: center;
 }
-.reset.main {
+.reset-main {
+	display: flex;
   justify-content: space-between;
-}
-.reset svg {
-  font-size: 18px;
 }
 .option {
   padding: 10px;
@@ -108,12 +104,12 @@ const search = () => {
 }
 .option h2 {
   color: var(--primary);
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 600;
 }
 .option.status {
   display: flex;
-  font-size: 16px;
+  font-size: 13px;
   flex-flow: column nowrap;
 }
 .option div {
