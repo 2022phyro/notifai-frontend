@@ -32,7 +32,7 @@ onMounted(async () => {
 const showApps = ref(false) // New ref for showing the apps
 const search = ref('')
 const appList = computed(() => {
-  return apps.value.filter(app => app.name.includes(search.value))
+  return apps.value.filter((app) => app.name.includes(search.value))
 })
 const msgB = reactive({
   del: ''
@@ -41,7 +41,11 @@ const set = reactive({
   del: ''
 })
 const closePopUp = () => {
-  ;(popup.visible = false), (popup.type = null), (popup.callback = null), (popup.args = []), (popup.decision= false)
+  ;(popup.visible = false),
+    (popup.type = null),
+    (popup.callback = null),
+    (popup.args = []),
+    (popup.decision = false)
 }
 
 const handleShowMsg = (id) => {
@@ -121,27 +125,82 @@ const closeApps = () => {
   showApps.value = !showApps.value
   search.value = ''
 }
+const handleDeleteKey = (id) => {
+  popup.visible = true
+  popup.type = 'deleteKey'
+  popup.decision = true
+  popup.callback = async () => {
+    try {
+      const instance = await inst(true)
+      await instance.delete(`${BASE_URL}/apps/${currApp.value._id}/keys/${id}`)
+      removeFromApps(id)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      closePopUp()
+    }
+  }
+}
+const handleRevokeKey = (id) => {
+  popup.visible = true
+  popup.type = 'revokeKey'
+  popup.decision = true
+  popup.callback = async () => {
+    try {
+      const instance = await inst(true)
+      await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys/${id}/revoke`)
+      removeFromApps(id)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      closePopUp()
+    }
+  }
+}
+const handleRevokeKeys = () => {
+  popup.visible = true
+	popup.type = 'deleteRevokeKeys'
+	popup.decision = true
+	popup.callback = async () => {
+    try {
+      const instance = await inst(true)
+      await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys/all/revoke`)
+      removeFromApps(id)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      closePopUp()
+    }
+	}
+}
 </script>
 <template>
   <div class="dashboard">
-    <NavigationMenu  @newApp="handleNewApp"/>
+    <NavigationMenu @newApp="handleNewApp" />
     <header>
       <RouterLink to="/" class="logo">
-      <img alt="Vue logo" src="/logo.png" width="125" height="125" />
-      <span>NotifAI</span>
-    </RouterLink>
-    <div class="apps">
-    <p class="current" @click="closeApps">
-      <span>{{ currApp.name }}</span>
-      <fa-icon :icon="['fas', showApps? 'caret-up': 'caret-down']"/>
-      </p>
-    <ul v-if="showApps">
-      <div class="search"><fa-icon :icon="['fas', 'magnifying-glass']"/><input v-model="search"></div>
-      <li v-for="app in appList" :key="app._id" :class="{'btn': true, 'curr': currApp === app}" @click="setApp(app)">
-        <fa-icon :icon="['fas', 'mobile-screen-button']" v-if="currApp === app" />{{ app.name }}
-      </li>
-    </ul>
-  </div>
+        <img alt="Vue logo" src="/logo.png" width="125" height="125" />
+        <span>NotifAI</span>
+      </RouterLink>
+      <div class="apps">
+        <p class="current" @click="closeApps">
+          <span>{{ currApp.name }}</span>
+          <fa-icon :icon="['fas', showApps ? 'caret-up' : 'caret-down']" />
+        </p>
+        <ul v-if="showApps">
+          <div class="search">
+            <fa-icon :icon="['fas', 'magnifying-glass']" /><input v-model="search" />
+          </div>
+          <li
+            v-for="app in appList"
+            :key="app._id"
+            :class="{ btn: true, curr: currApp === app }"
+            @click="setApp(app)"
+          >
+            <fa-icon :icon="['fas', 'mobile-screen-button']" v-if="currApp === app" />{{ app.name }}
+          </li>
+        </ul>
+      </div>
     </header>
     <div class="body">
       <RouterView
@@ -150,6 +209,9 @@ const closeApps = () => {
         :del="msgB.del"
         @deleteApp="handleDeleteApp"
         :appDel="set.del"
+        @revokeKey="handleRevokeKey"
+        @deleteKey="handleDeleteKey"
+        @revokeKeys="handleRevokeKeys"
       />
     </div>
   </div>
@@ -206,7 +268,6 @@ header {
   left: 180px;
   top: 10px;
   border-radius: 4px;
-
 }
 .apps li {
   list-style-type: none;
@@ -239,7 +300,7 @@ header {
   justify-items: flex-start;
   margin-top: 10px;
 }
-.apps ul input{
+.apps ul input {
   width: 90%;
   font-size: 13px;
   font-weight: 300;

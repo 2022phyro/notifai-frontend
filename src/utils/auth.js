@@ -2,7 +2,7 @@ import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { format } from 'date-fns'
-const BASE_URL = "http://localhost:3000/api/v1"
+const BASE_URL = 'http://localhost:3000/api/v1'
 const LEEWAY = 600000
 
 async function getToken() {
@@ -12,53 +12,47 @@ async function getToken() {
   let accessToken = currToken?.value
   const expiry = tokenExpiry?.value
   if (!accessToken || expiry < Date.now() + LEEWAY) {
-    accessToken = await refreshToken();
+    accessToken = await refreshToken()
   }
-  
+
   if (accessToken) {
-    setAuth(true);
-    return "JWT " + accessToken;
+    setAuth(true)
+    return 'JWT ' + accessToken
   }
   setAuth(false)
 }
 async function refreshToken() {
-    try {
-      const authState = useAuthStore()
-      const { setCurrToken } = authState
-      const response = await axios.post(`${BASE_URL}/refresh`, undefined, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
-      const result = response.data.data
-      setCurrToken(result.accessToken, result.access_exp)
-      return result.accessToken;
-    } catch (error) {
-      console.error(error);
-    }
+  try {
+    const authState = useAuthStore()
+    const { setCurrToken } = authState
+    const response = await axios.post(`${BASE_URL}/refresh`, undefined, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true
+    })
+    const result = response.data.data
+    setCurrToken(result.accessToken, result.access_exp)
+    return result.accessToken
+  } catch (error) {
+    console.error(error)
   }
-
+}
 
 const inst = async (auth) => {
   const instance = axios.create({
     withCredentials: true
-  });
+  })
 
   if (auth) {
-    const token = await getToken();
-    instance.defaults.headers.common['Authorization'] = token;
+    const token = await getToken()
+    instance.defaults.headers.common['Authorization'] = token
   }
 
-  return instance;
+  return instance
 }
 const formatDate = (dateString) => {
   const date = new Date(dateString)
   return format(date, 'PPpp')
 }
-export {
-    getToken,
-    inst,
-    BASE_URL,
-    formatDate
-}
+export { getToken, inst, BASE_URL, formatDate }

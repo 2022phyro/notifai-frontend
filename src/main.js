@@ -24,7 +24,14 @@ import {
   faCaretUp,
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
-import { faEye, faTrashCan, faEyeSlash, faCopy, faCircleXmark, faSquarePlus } from '@fortawesome/free-regular-svg-icons'
+import {
+  faEye,
+  faTrashCan,
+  faEyeSlash,
+  faCopy,
+  faCircleXmark,
+  faSquarePlus
+} from '@fortawesome/free-regular-svg-icons'
 library.add({
   faHouse,
   faGear,

@@ -1,7 +1,7 @@
 <template>
-<span class="loader">
+  <span class="loader">
     <span></span>
-</span>
+  </span>
 </template>
 
 <style>
@@ -11,7 +11,7 @@
   height: 150px;
   background: transparent;
   border-radius: 50%;
-  box-shadow: 25px 25px 75px rgba(0,0,0,0.55);
+  box-shadow: 25px 25px 75px rgba(0, 0, 0, 0.55);
   border: 1px solid #333;
   display: flex;
   align-items: center;
@@ -26,8 +26,9 @@
   background: transparent;
   border: 1px dashed#444;
   border-radius: 50%;
-  box-shadow: inset -5px -5px 25px rgba(0,0,0,0.25),
-  inset 5px 5px 35px rgba(0,0,0,0.25);
+  box-shadow:
+    inset -5px -5px 25px rgba(0, 0, 0, 0.25),
+    inset 5px 5px 35px rgba(0, 0, 0, 0.25);
 }
 
 .loader::after {
@@ -37,8 +38,9 @@
   height: 50px;
   border-radius: 50%;
   border: 1px dashed#444;
-  box-shadow: inset -5px -5px 25px rgba(0,0,0,0.25),
-  inset 5px 5px 35px rgba(0,0,0,0.25);
+  box-shadow:
+    inset -5px -5px 25px rgba(0, 0, 0, 0.25),
+    inset 5px 5px 35px rgba(0, 0, 0, 0.25);
 }
 
 .loader span {

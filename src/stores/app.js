@@ -21,5 +21,5 @@ export const useAppStore = defineStore('apps', () => {
     }
     apps.value = newApps
   }
-  return { apps, currApp, setApps, setCurrApp, addToApps,removeFromApps }
+  return { apps, currApp, setApps, setCurrApp, addToApps, removeFromApps }
 })

@@ -7,7 +7,7 @@ const router = useRouter()
 const isLoading = ref(false)
 onBeforeMount(() => {
   router.beforeEach((to, from, next) => {
-    isLoading.value = to.matched.length === 1 && to.matched[0].path === to.path;
+    isLoading.value = to.matched.length === 1 && to.matched[0].path === to.path
     next()
   })
 

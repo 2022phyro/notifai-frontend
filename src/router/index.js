@@ -43,7 +43,7 @@ const router = createRouter({
           path: '',
           name: 'dbHome',
           component: MessageBoard,
-          props: route => ({ del: route.query.del })
+          props: (route) => ({ del: route.query.del })
         },
         {
           path: 'compose',
@@ -54,17 +54,17 @@ const router = createRouter({
           path: 'settings',
           name: 'dbSettings',
           component: () => import('../components/SettingsBoard.vue'),
-          props: route => ({ del: route.query.del })
+          props: (route) => ({ del: route.query.del })
         },
         {
           path: 'docs',
           name: 'dbDocs',
-          component: () => import ('../components/KeysBoard.vue')
+          component: () => import('../components/KeysBoard.vue')
         },
         {
           path: 'keys',
           name: 'dbKeys',
-          component: () => import ('../components/KeysBoard.vue')
+          component: () => import('../components/KeysBoard.vue')
         }
       ]
     }

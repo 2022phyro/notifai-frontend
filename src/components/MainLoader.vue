@@ -1,7 +1,6 @@
 <template>
   <div class="loader">
     <div class="dots">
-
       <div class="dot"></div>
       <div class="dot"></div>
       <div class="dot"></div>

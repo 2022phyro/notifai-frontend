@@ -2,29 +2,40 @@
 import ApiKey from './ApiKey.vue'
 import NewKey from './NewKey.vue'
 import { ref } from 'vue'
-
+const emit = defineEmits(['revokeKey', 'deleteKey', 'revokeKeys'])
 const newKey = ref(null)
 const showNewKey = () => {
   newKey.value = true
 }
+const handleRevoke = (id) => {
+  emit('revokeKey', id)
+}
+const handleDelete = (id) => {
+  emit('deleteKey', id)
+}
+const handleRevokeKeys = () => {
+  emit('revokeKeys')
+}
 </script>
 <template>
-  <div class="api-keys" v-if="newKey === null">
-    <div class="header">
-      <h2>API Keys</h2>
-      <div class="decision">
-        <button class="b-pri" @click="showNewKey">Generate new key</button>
-        <button class="b-danger">Revoke all keys</button>
-      </div>
-    </div>
-    <p>Keys that you create here will allow you to access the SDK and the NotifAI API</p>
-    <ApiKey />
-    <ApiKey />
-    <ApiKey class="grey" />
-    <ApiKey />
-    <ApiKey class="red" />
-  </div>
-<NewKey v-else-if="newKey === true"/>
+	<div>
+		<div class="api-keys" v-if="newKey === null">
+			<div class="header">
+				<h2>API Keys</h2>
+				<div class="decision">
+					<button class="b-pri" @click="showNewKey">Generate new key</button>
+					<button class="b-danger" @click="handleRevokeKeys">Revoke all keys</button>
+				</div>
+			</div>
+			<p>Keys that you create here will allow you to access the SDK and the NotifAI API</p>
+			<ApiKey @delete="handleDelete" @revoke="handleRevoke" />
+			<ApiKey />
+			<ApiKey class="grey" />
+			<ApiKey />
+			<ApiKey class="red" />
+		</div>
+		<NewKey v-else-if="newKey === true" @return="newKey = null" />
+	</div>
 </template>
 <style scoped>
 .header {
@@ -55,35 +66,5 @@ const showNewKey = () => {
 }
 .red {
   background: #eea6a6;
-}
-.newKey .header span {
-	cursor: pointer;
-	font-weight: 600;
-}
-.newKey .header span {
-	text-decoration: underline;
-}
-.newKey {
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 5px;
-}
-
-.header {
-  margin-bottom: 20px;
-}
-
-.form-group {
-  margin-bottom: 10px;
-}
-
-.checkbox-group {
-  margin-bottom: 5px;
-}
-
-.decide {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
 }
 </style>

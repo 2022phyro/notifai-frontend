@@ -16,7 +16,7 @@ const form = reactive({
   body: '',
   icon: '',
   clickUrl: '',
-  data: ""
+  data: ''
 })
 const isLoading = ref(false)
 const errMsg = ref(null)
@@ -64,22 +64,24 @@ const submitForm = async () => {
   if (!result) {
     isLoading.value = false
     console.log(form.data)
-  } 
-  else {
+  } else {
     try {
       const { data, ...body } = form
       if (data) {
         body.data = JSON.parse(data)
       }
       const instance = await inst(true)
-      const response = await instance.post(`${BASE_URL}/apps/${currApp.value._id}/notifications`, body)
+      const response = await instance.post(
+        `${BASE_URL}/apps/${currApp.value._id}/notifications`,
+        body
+      )
       const result = response.data.data
       console.log(result)
       router.push('/dashboard')
       errMsg.value = null
     } catch (error) {
       console.log(error)
-      errMsg.value = "Something went wrong. Please try again later"
+      errMsg.value = 'Something went wrong. Please try again later'
     } finally {
       isLoading.value = false
     }
@@ -130,7 +132,7 @@ const submitForm = async () => {
           {{ v$.body.$errors[0]?.$message }}
         </p>
       </div>
-      <h2 class="extras  b pri" @click="showImageUrl = !showImageUrl">
+      <h2 class="extras b pri" @click="showImageUrl = !showImageUrl">
         <fa-icon :icon="['fas', !showImageUrl ? 'caret-right' : 'caret-down']" />Extras
       </h2>
       <div v-if="showImageUrl" class="fcol cmp-value ex ey">
@@ -148,7 +150,9 @@ const submitForm = async () => {
         </p>
       </div>
       <div v-if="showImageUrl" class="fcol cmp-value ex">
-        <label for="clickUrl">Click action: A page your user will be taken to once he clicks the notification</label>
+        <label for="clickUrl"
+          >Click action: A page your user will be taken to once he clicks the notification</label
+        >
         <input
           id="clickUrl"
           type="text"
@@ -176,8 +180,8 @@ const submitForm = async () => {
       </div>
       <button class="b-pri" :disabled="isLoading" type="submit">Submit</button>
       <p class="error-msg" v-if="errMsg">
-          {{ errMsg }}
-        </p>
+        {{ errMsg }}
+      </p>
     </form>
   </div>
 </template>
@@ -212,11 +216,11 @@ const submitForm = async () => {
   display: flex;
   flex-flow: row;
   align-items: center;
-	padding: 0;
+  padding: 0;
   font-size: 16px;
   gap: 6px;
   cursor: pointer;
-	z-index: 0;
+  z-index: 0;
 }
 .cmp-value.ex {
   border-left: 2px solid var(--primary);

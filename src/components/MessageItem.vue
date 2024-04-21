@@ -8,7 +8,7 @@ const props = defineProps({
   created: String,
   read: Boolean,
   retries: Number,
-  status: String,
+  status: String
 })
 const viewMsg = () => {
   emit('viewMsg', props._id)
@@ -17,7 +17,6 @@ const viewMsg = () => {
 const deleteMsg = () => {
   emit('deleteMsg', props._id)
 }
-
 </script>
 <template>
   <article>
@@ -26,14 +25,14 @@ const deleteMsg = () => {
       <fa-icon class="icon view btn" :icon="['far', 'eye']" @click="viewMsg" />
     </div>
     <div class="part">
-      <h3><span class="label">id</span>{{props._id}}</h3>
+      <h3><span class="label">id</span>{{ props._id }}</h3>
       <p><span class="label">User's id</span>{{ props.userId }}</p>
-      <p><span class="label">read</span>{{ props.read}}</p>
+      <p><span class="label">read</span>{{ props.read }}</p>
     </div>
     <div class="part">
       <p><span class="label">status</span>{{ props.status }}</p>
       <p><span class="label">retries</span>{{ props.retries }}</p>
-      <p><span class="label">created</span>{{ formatDate(props.created)}}</p>
+      <p><span class="label">created</span>{{ formatDate(props.created) }}</p>
     </div>
   </article>
 </template>

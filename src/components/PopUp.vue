@@ -55,7 +55,10 @@ const allMessages = {
     `Type in the name ${props.args[0]}. Note this action is irreversible and you will lose all data associated with it`,
     'Delete'
   ],
-  newApp: ['Enter the name of the new app you want', 'Create']
+  newApp: ['Enter the name of the new app you want', 'Create'],
+  revokeKey: ['Are you sure you want to revoke this key? Note that it is irreversible and you will not be able to use it to access any data again', "Revoke"],
+  deleteKey: ['Are you sure you want to delete this key?', "Delete"],
+	deleteRevokeKeys: ['Are you sure you want to revoke all your keys? You will not be able to access any data till you create a new one', 'Revoke']
 }
 const notification = reactive({
   title: '',
@@ -126,8 +129,8 @@ const close = () => {
         />
         <p class="error-msg" v-if="appNameError">{{ appNameError }}</p>
         <div class="buttons">
-          <button class="b-pri" @click="close">Cancel</button>
-          <button class="b-danger" @click="handleCallback">
+          <button class="b-sec" @click="close">Cancel</button>
+          <button :class="props.type.startsWith('delete')? 'b-danger': 'b-pri'" @click="handleCallback">
             {{ allMessages[props.type][1] }}
           </button>
         </div>
@@ -135,8 +138,8 @@ const close = () => {
       <div class="decision" v-else>
         <p>{{ allMessages[props.type][0] }}</p>
         <div class="buttons">
-          <button class="b-pri" @click="close">Cancel</button>
-          <button class="b-danger" @click="props.callback">
+          <button class="b-sec" @click="close">Cancel</button>
+          <button :class="props.type.startsWith('delete')? 'b-danger': 'b-pri'" @click="props.callback">
             {{ allMessages[props.type][1] }}
           </button>
         </div>

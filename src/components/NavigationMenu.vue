@@ -7,7 +7,6 @@ const route = useRoute()
 const newApp = () => {
   emit('newApp')
 }
-
 </script>
 <template>
   <div class="navigation">
@@ -32,7 +31,9 @@ const newApp = () => {
         <RouterLink to="/dashboard/docs"><fa-icon :icon="['fas', 'book-open']" />Docs</RouterLink>
       </li>
       <li class="nav-item">
-        <div class="new-app" @click="newApp"><fa-icon :icon="['far', 'square-plus']"/> New App</div>
+        <div class="new-app" @click="newApp">
+          <fa-icon :icon="['far', 'square-plus']" /> New App
+        </div>
       </li>
     </ul>
   </div>
@@ -74,7 +75,8 @@ const newApp = () => {
   transition: all 0.4s ease;
 }
 
-.nav-item a, .new-app {
+.nav-item a,
+.new-app {
   width: 80%;
   height: 100%;
   display: flex;

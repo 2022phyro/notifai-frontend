@@ -46,7 +46,7 @@ a {
 .button-outline:disabled,
 .button-outline:disabled:active {
   cursor: not-allowed;
-  background: rgba(0,0,0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   transform: none;
   color: black;
@@ -111,7 +111,7 @@ p span.red {
   font-weight: 600;
 }
 .u {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .b-pri,
@@ -123,7 +123,6 @@ p span.red {
   font-weight: 500;
   font-size: 13px;
   transition: all 0.3s ease;
-
 }
 .b-pri:active,
 .b-sec:active,
@@ -142,10 +141,12 @@ p span.red {
 }
 .b-sec {
   border: 1px solid white;
+  background: #ccc;
+  border: 1px solid #ccc;
 }
 .b-sec:hover {
   background-color: #f1f5f9;
-  border-color: white;
+  border-color: #f1f5f9;
 }
 .b-danger {
   background-color: #dc2626;

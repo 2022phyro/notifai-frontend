@@ -1,3 +1,17 @@
+<script setup>
+const emit = defineEmits(['revoke', 'delete'])
+const props = defineProps({
+  name: String,
+  _id: String
+})
+const deleteKey = () => {
+  emit('delete', "ifkyghjjh")
+}
+const revoke = () => {
+  emit('revoke', "896847dhgh")
+}
+
+</script>
 <template>
   <div class="api-key">
     <p class="h1"><span class="pri">Test key</span><span class="i">Last used yesterday</span></p>
@@ -5,8 +19,8 @@
     <div class="decide">
       <p>Expiring <span class="b i">Friday, March 15 2024</span></p>
       <div>
-        <button class="b-sec">Revoke</button>
-        <button class="b-danger">Delete</button>
+        <button class="b-sec" @click="revoke">Revoke</button>
+        <button class="b-danger" @click="deleteKey">Delete</button>
       </div>
     </div>
   </div>
@@ -47,7 +61,7 @@
 .decide button {
   font-size: 12px;
   padding: 8px 10px;
-	font-weight: 300;
+  font-weight: 300;
 }
 /* .decide button:hover {
   font-weight: 500;
