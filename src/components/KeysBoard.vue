@@ -1,6 +1,7 @@
 <script setup>
 import ApiKey from './ApiKey.vue'
 import NewKey from './NewKey.vue'
+import CardLoader from './CardLoader.vue'
 import { ref, watch } from 'vue'
 import { useKeysStore } from '@/stores/keys'
 import { useAppStore } from '@/stores/app'
@@ -13,6 +14,7 @@ const { keys } = storeToRefs(kS)
 const { setKeys } = kS
 const emit = defineEmits(['revokeKey', 'deleteKey', 'revokeKeys'])
 const newKey = ref(null)
+const isLoading = ref(false)
 const showNewKey = () => {
   newKey.value = true
 }
@@ -37,9 +39,13 @@ const fetchKeys = async () => {
 
 }
 watch(currApp, async (newApp) => {
-  if (newApp && newApp._id) {
-    await fetchKeys()
-  }
+  isLoading.value = true
+  setTimeout(async () => {
+    if (newApp && newApp._id) {
+      await fetchKeys()
+    }
+    isLoading.value = false
+  }, 1000)
 }, {immediate: true})
 </script>
 <template>
@@ -53,7 +59,13 @@ watch(currApp, async (newApp) => {
 				</div>
 			</div>
 			<p>Keys that you create here will allow you to access the SDK and the NotifAI API</p>
-			<ApiKey v-for="(key, idx) in keys" :key="idx" v-bind="key" @delete="handleDelete" @revoke="handleRevoke" />
+      <div class="loader" v-if="isLoading">
+        <CardLoader
+          v-for="num in [1, 2, 3]"
+          :key="num"
+        />
+      </div>
+			<ApiKey v-else v-for="(key, idx) in keys" :key="idx" v-bind="key" @delete="handleDelete" @revoke="handleRevoke" />
 		</div>
 		<NewKey v-else-if="newKey === true" @return="newKey = null" />
 	</div>
@@ -82,5 +94,8 @@ watch(currApp, async (newApp) => {
   gap: 20px;
   align-items: center;
 }
-
+.loader {
+  width: 100%;
+  max-width: 700px;
+}
 </style>

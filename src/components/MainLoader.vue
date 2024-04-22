@@ -1,80 +1,50 @@
 <template>
-  <div class="loader">
-    <div class="dots">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
-  </div>
+<div class="loading-wrapper">
+  <div class="loading">
+  <svg width="64px" height="48px">
+      <polyline points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24" id="back"></polyline>
+    <polyline points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24" id="front"></polyline>
+  </svg>
+</div>
+</div>
 </template>
 <style scoped>
-.loader {
-  z-index: 10;
+.loading-wrapper {
   width: 100vw;
   height: 100vh;
+  position: fixed;
+  top: 0;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
   align-items: center;
-  align-content: center;
-  position: relative;
-  background: var(--color-background);
+  justify-content: center;
+}
+.loading svg polyline {
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-@keyframes spin-and-move {
-  0% {
-    transform: rotate(0deg) translateX(0);
-  }
-  50% {
-    transform: rotate(180deg) translateX(100px);
-  }
-  100% {
-    transform: rotate(360deg) translateX(200px);
-  }
+.loading svg polyline#back {
+  fill: none;
+  stroke: rgb(155, 155, 201);
 }
 
-@keyframes dot {
-  0% {
+.loading svg polyline#front {
+  fill: none;
+  stroke: rgb(3, 3, 209);
+  stroke-dasharray: 48, 144;
+  stroke-dashoffset: 192;
+  animation: dash_682 1.4s linear infinite;
+}
+
+@keyframes dash_682 {
+  72.5% {
     opacity: 0;
-    transform: translateX(0);
   }
-  50% {
-    opacity: 1;
-    transform: translateX(100px);
+
+  to {
+    stroke-dashoffset: 0;
   }
-  100% {
-    opacity: 0;
-    transform: translateX(200px);
-  }
-}
-.spinning-logo {
-  animation: spin-and-move 4s linear infinite;
-  transform-origin: 50% 100%; /* Rotate around the bottom edge */
-  width: 50px;
-  height: 50px;
-}
-.dots {
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  width: 200px;
-  left: calc(50% - 100px);
-}
-
-.dot {
-  background: black;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  animation: dot 1s ease-in-out infinite;
-}
-
-.dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.dot:nth-child(3) {
-  animation-delay: 0.4s;
 }
 </style>

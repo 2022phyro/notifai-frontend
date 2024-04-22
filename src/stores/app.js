@@ -20,8 +20,10 @@ export const useAppStore = defineStore('apps', () => {
     const newApps = apps.value.filter((app) => app._id !== id)
     if (currApp.value._id === id) {
       ldel('currApp')
-      if (newApps.length)
+      if (newApps.length) {
         lset('currApp', newApps[0])
+        currApp.value = newApps[0]
+      }
       else {
         ldel('currApp')
         currApp.value = {}

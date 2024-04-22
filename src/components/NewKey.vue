@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia'
 import { inst, BASE_URL } from '@/utils/auth'
 const emit = defineEmits(['return', 'created'])
 const keyName = ref('')
+const isActive = ref(false)
 const expiryDate = ref(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString())
 const scopes = reactive({
   all: false,
@@ -21,6 +22,7 @@ const msg = ref('')
 const chosen = ref('7 days')
 const generateKey = async () => {
   try {
+    isActive.value = true
     const selectedScopes = Object.keys(scopes).filter((scope) => scopes[scope])
     const body = {
       alias: keyName.value,
@@ -37,6 +39,8 @@ const generateKey = async () => {
     addToKeys(data)
   } catch (error) {
     console.error(error)
+  } finally {
+    isActive.value = false
   }
 }
 const changeDate = (days, value) => {
@@ -101,8 +105,8 @@ const success = () => {
         </div>
       </div>
       <div class="decide">
-        <button class="b-pri" type="submit">Generate</button>
-        <button type="button" @click="emit('return')" class="b-sec">Cancel</button>
+        <button  :disabled="isActive" class="b-pri" type="submit">Generate</button>
+        <button  :disabled="isActive" type="button" @click="emit('return')" class="b-sec">Cancel</button>
       </div>
     </form>
   </div>

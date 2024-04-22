@@ -14,7 +14,7 @@ onBeforeMount(() => {
   router.afterEach(() => {
     setTimeout(() => {
       isLoading.value = false
-    }, 2000) // Delay of 3 seconds
+    }, 3000) // Delay of 3 seconds
   })
 })
 </script>

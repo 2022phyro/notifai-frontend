@@ -8,7 +8,7 @@ const props = defineProps({
   args: Array
 })
 const type = computed(() => props.type)
-
+const isActive = ref(false)
 const message = computed(() =>
   props.type === 'deleteApp'
     ? `Type in the name <span class="red">${props.args[0]}</span>. Note this action is irreversible and you will lose all data associated with <span class="red">${props.args[0]}</span>`
@@ -30,6 +30,7 @@ const validateAppName = () => {
 }
 
 const handleCallback = async () => {
+  isActive.value = true
   try {
     if (props.type == 'deleteApp') {
       if (props.args[0] && appName.value !== props.args[0]) {
@@ -43,8 +44,21 @@ const handleCallback = async () => {
     console.error(error)
   } finally {
     appName.value = ''
-    // appNameError.value = ''
+    isActive.value = false
   }
+}
+const handleCb = () => {
+  setTimeout( async () => {
+    try {
+      isActive.value = true
+      await props.callback()
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isActive.value = false
+    }
+  }, 1000)
+
 }
 const emit = defineEmits(['closePopUp', 'pFormSuccess', 'nFormSuccess', 'dFormSuccess'])
 const allMessages = {
@@ -129,8 +143,8 @@ const close = () => {
         />
         <p class="error-msg" v-if="appNameError">{{ appNameError }}</p>
         <div class="buttons">
-          <button class="b-sec" @click="close">Cancel</button>
-          <button :class="props.type.startsWith('delete')? 'b-danger': 'b-pri'" @click="handleCallback">
+          <button :disabled="isActive" class="b-sec" @click="close">Cancel</button>
+          <button :disabled="isActive" :class="props.type.startsWith('delete')? 'b-danger': 'b-pri'" @click="handleCallback">
             {{ allMessages[props.type][1] }}
           </button>
         </div>
@@ -138,8 +152,8 @@ const close = () => {
       <div class="decision" v-else>
         <p>{{ allMessages[props.type][0] }}</p>
         <div class="buttons">
-          <button class="b-sec" @click="close">Cancel</button>
-          <button :class="props.type.startsWith('delete')? 'b-danger': 'b-pri'" @click="props.callback">
+          <button :disabled="isActive" class="b-sec" @click="close">Cancel</button>
+          <button :disabled="isActive" :class="props.type.startsWith('delete')? 'b-danger': 'b-pri'" @click="handleCb">
             {{ allMessages[props.type][1] }}
           </button>
         </div>

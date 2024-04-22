@@ -2,6 +2,7 @@
 import { ref, reactive, watch, computed } from 'vue'
 import MessageItem from './MessageItem.vue'
 import FilterBoard from './FilterBoard.vue'
+import CardLoader from './CardLoader.vue'
 import { inst, BASE_URL } from '@/utils/auth'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/app'
@@ -12,6 +13,7 @@ const del = computed(() => props.del)
 const { currApp } = storeToRefs(useAppStore())
 const messages = ref([])
 const isActive = ref(false)
+const isLoading = ref(false)
 const emit = defineEmits(['showMsg', 'deleteMsg'])
 const filters = reactive({
   status: '',
@@ -65,10 +67,15 @@ const goPrev = async () => {
 
 watch(
   currApp,
-  async (newApp) => {
-    if (newApp && newApp._id) {
-      await fetchMessages(page.value)
-    }
+  (newApp) => {
+    isLoading.value = true
+    setTimeout(async () => {
+      if (newApp && newApp._id) {
+        await fetchMessages(page.value)
+      }
+      isLoading.value = false
+    }, 1000)
+
   },
   { immediate: true }
 )
@@ -97,7 +104,14 @@ const toggleActive = () => {
       <FilterBoard @filter="handleFilter" />
     </div>
     <div class="message-wrapper">
+      <div class='loader' v-if="isLoading">
+        <CardLoader
+          v-for="num in [1, 2]"
+          :key="num"
+        />
+      </div>
       <MessageItem
+        v-else
         v-for="(message, index) in messages"
         v-bind="message"
         :key="index"
@@ -134,6 +148,9 @@ const toggleActive = () => {
   justify-content: space-evenly;
   gap: 30px;
   padding: 30px 30px 50px 30px;
+}
+.loader {
+  width: 550px;
 }
 div.message-filter {
   transition: right 0.5s ease;
