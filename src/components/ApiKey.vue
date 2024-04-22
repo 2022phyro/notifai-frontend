@@ -1,25 +1,37 @@
 <script setup>
+import { formatDate } from '@/utils/formats'
 const emit = defineEmits(['revoke', 'delete'])
 const props = defineProps({
   name: String,
-  _id: String
+  _id: String,
+	alias: String,
+	created: String,
+	expires: String,
+	revoked: Boolean,
+	appId: String,
+	scopes: Array,
+  lastUsed: String
 })
 const deleteKey = () => {
-  emit('delete', "ifkyghjjh")
+  emit('delete', props.name)
 }
 const revoke = () => {
-  emit('revoke', "896847dhgh")
+  emit('revoke', props.name)
 }
 
-</script>
+const isExpired = () => {
+  return new Date(props.expires) < new Date()
+}
+
+  </script>
 <template>
-  <div class="api-key">
-    <p class="h1"><span class="pri">Test key</span><span class="i">Last used yesterday</span></p>
-    <p class="italics">all, admin</p>
+  <div :class="{'api-key': true, 'red': props.revoked, 'grey': isExpired()}">
+		<p class="h1"><span class="pri">{{ props.alias }}</span><span class="i">{{props.revoked? 'Revoked ':'Last used ' }}{{formatDate(props.lastUsed, 'human')}}</span></p>
+		<p class="italics">{{ props.scopes.join(", ") }}</p>
     <div class="decide">
-      <p>Expiring <span class="b i">Friday, March 15 2024</span></p>
-      <div>
-        <button class="b-sec" @click="revoke">Revoke</button>
+      <p>{{isExpired()? 'Expired':'Expiring'}} <span class="b i">{{formatDate(props.expires, 'abs-date')}}</span></p>
+      <div >
+        <button v-if="!isExpired() && !props.revoked" class="b-sec" @click="revoke">Revoke</button>
         <button class="b-danger" @click="deleteKey">Delete</button>
       </div>
     </div>
@@ -63,7 +75,10 @@ const revoke = () => {
   padding: 8px 10px;
   font-weight: 300;
 }
-/* .decide button:hover {
-  font-weight: 500;
-} */
+.grey {
+  background: #ececec;
+}
+.red {
+  background: #fccdcd;
+}
 </style>

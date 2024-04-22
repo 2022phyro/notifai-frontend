@@ -1,5 +1,5 @@
 <script setup>
-import { formatDate } from '@/utils/auth.js'
+import { formatDate } from '@/utils/formats.js'
 const emit = defineEmits(['viewMsg', 'deleteMsg'])
 const props = defineProps({
   _id: String,
@@ -32,7 +32,7 @@ const deleteMsg = () => {
     <div class="part">
       <p><span class="label">status</span>{{ props.status }}</p>
       <p><span class="label">retries</span>{{ props.retries }}</p>
-      <p><span class="label">created</span>{{ formatDate(props.created) }}</p>
+      <p><span class="label">created</span>{{ formatDate(props.created, 'absolute') }}</p>
     </div>
   </article>
 </template>

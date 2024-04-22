@@ -1,7 +1,16 @@
 <script setup>
 import ApiKey from './ApiKey.vue'
 import NewKey from './NewKey.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useKeysStore } from '@/stores/keys'
+import { useAppStore } from '@/stores/app'
+import { storeToRefs } from 'pinia'
+import { inst, BASE_URL } from '@/utils/auth'
+
+const kS = useKeysStore()
+const { currApp } = storeToRefs(useAppStore())
+const { keys } = storeToRefs(kS)
+const { setKeys } = kS
 const emit = defineEmits(['revokeKey', 'deleteKey', 'revokeKeys'])
 const newKey = ref(null)
 const showNewKey = () => {
@@ -16,6 +25,22 @@ const handleDelete = (id) => {
 const handleRevokeKeys = () => {
   emit('revokeKeys')
 }
+const fetchKeys = async () => {
+  try {
+    const instance = await inst(true)
+    const response = await instance.get(`${BASE_URL}/apps/${currApp.value._id}/keys`)
+    const { data } = response.data
+    setKeys(data)
+  } catch (error) {
+    console.error(error)
+  }
+
+}
+watch(currApp, async (newApp) => {
+  if (newApp && newApp._id) {
+    await fetchKeys()
+  }
+}, {immediate: true})
 </script>
 <template>
 	<div>
@@ -28,11 +53,7 @@ const handleRevokeKeys = () => {
 				</div>
 			</div>
 			<p>Keys that you create here will allow you to access the SDK and the NotifAI API</p>
-			<ApiKey @delete="handleDelete" @revoke="handleRevoke" />
-			<ApiKey />
-			<ApiKey class="grey" />
-			<ApiKey />
-			<ApiKey class="red" />
+			<ApiKey v-for="(key, idx) in keys" :key="idx" v-bind="key" @delete="handleDelete" @revoke="handleRevoke" />
 		</div>
 		<NewKey v-else-if="newKey === true" @return="newKey = null" />
 	</div>
@@ -61,10 +82,5 @@ const handleRevokeKeys = () => {
   gap: 20px;
   align-items: center;
 }
-.grey {
-  background: #ececec;
-}
-.red {
-  background: #eea6a6;
-}
+
 </style>

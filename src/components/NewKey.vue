@@ -1,23 +1,46 @@
 <script setup>
 import { ref, reactive } from 'vue'
+import { useKeysStore } from '@/stores/keys'
+import { useAppStore } from '@/stores/app'
+import { storeToRefs } from 'pinia'
+import { inst, BASE_URL } from '@/utils/auth'
 const emit = defineEmits(['return', 'created'])
 const keyName = ref('')
-const expiryDate = ref(new Date() + (7 * 24 * 60 * 60 * 1000))
+const expiryDate = ref(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString())
 const scopes = reactive({
   all: false,
   admin: false,
   read: false
 })
+const kS = useKeysStore()
+const { currApp } = storeToRefs(useAppStore())
+const { addToKeys } = kS
 const showForm = ref(false)
 const dD = ref(false)
-const msg = ref(false)
+const msg = ref('')
 const chosen = ref('7 days')
-const generateKey = () => {
-    console.log({ alias: keyName.value, expiry: expiryDate.value, scopes})
-    msg.value = !msg.value
+const generateKey = async () => {
+  try {
+    const selectedScopes = Object.keys(scopes).filter((scope) => scopes[scope])
+    const body = {
+      alias: keyName.value,
+      expiry: expiryDate.value,
+      scopes: selectedScopes
+    }
+    console.log(body)
+    const instance = await inst(true)
+    const response = await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys`, body)
+    const { data } = response.data
+    console.log(data)
+    msg.value = data.key
+    delete data.key
+    addToKeys(data)
+  } catch (error) {
+    console.error(error)
+  }
 }
 const changeDate = (days, value) => {
-  expiryDate.value = new Date() + days * 24 * 60 * 60 * 1000
+  expiryDate.value = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString()
   chosen.value = value
   showForm.value = false
   dD.value = false
@@ -25,8 +48,12 @@ const changeDate = (days, value) => {
 const customV = () => {
   showForm.value = true
   chosen.value = 'Custom'
-  expiryDate.value = new Date().toISOString().split('T')[0]
+  expiryDate.value = ''
   dD.value = false
+}
+const success = () => {
+  msg.value = ''
+  emit('return')
 }
 </script>
 <template>
@@ -64,7 +91,9 @@ const customV = () => {
         </div>
         <div class="checkbox-group">
           <input v-model="scopes.admin" type="checkbox" id="adm" />
-          <label for="adm"><span class="pri">admin</span> - Access to administrative resources</label>
+          <label for="adm"
+            ><span class="pri">admin</span> - Access to administrative resources</label
+          >
         </div>
         <div class="checkbox-group">
           <input v-model="scopes.read" type="checkbox" id="read" />
@@ -77,15 +106,16 @@ const customV = () => {
       </div>
     </form>
   </div>
-  <div class="key-wrapper" v-if="msg">
-        <div class="key">
-            <p> Please copy your key and store in a secure location as you will not see this after you close this popup
-        </p>
-        <p class="pri bi">cy6c6d6ee_kjshefjdjgkajsgfkjdsgfdfg</p>
-        <button class="b-sec" @click="msg = !msg">Ok</button>
-        </div>
-
+  <div class="key-wrapper" v-if="msg !== ''">
+    <div class="key">
+      <p>
+        Please copy your key and store in a secure location as you will not see this after you close
+        this popup
+      </p>
+      <p class="pri bi">{{ msg }}</p>
+      <button class="b-sec" @click="success">Ok</button>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -111,8 +141,8 @@ const customV = () => {
   display: flex;
   flex-flow: column;
 }
-.form-group input[type=text] {
-    width: 300px;
+.form-group input[type='text'] {
+  width: 300px;
 }
 .checkbox-group {
   margin-bottom: 5px;
@@ -173,16 +203,16 @@ const customV = () => {
 }
 
 .key-wrapper {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    backdrop-filter: blur(5px);
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
 }
 .key {
   border: 1px solid #ccc;
@@ -192,8 +222,10 @@ const customV = () => {
   gap: 10px;
   background: var(--color-background);
   width: 600px;
+  word-break: break-all; /* Add this line */
+
 }
 .key button {
-    width: 60px;
+  width: 60px;
 }
 </style>

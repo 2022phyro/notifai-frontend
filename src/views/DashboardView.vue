@@ -4,11 +4,15 @@ import { RouterView } from 'vue-router'
 import NavigationMenu from '@/components/NavigationMenu.vue'
 import PopUp from '@/components/PopUp.vue'
 import { useAppStore } from '@/stores/app'
+import { useKeysStore } from '@/stores/keys'
 import { storeToRefs } from 'pinia'
 import { inst, BASE_URL } from '@/utils/auth'
+import { lget } from '@/utils/ls'
 const appStore = useAppStore()
+const keyStore = useKeysStore()
 const { currApp, apps } = storeToRefs(appStore)
 const { addToApps, setCurrApp, removeFromApps, setApps } = appStore
+const { removeFromKeys, modifyKey } = keyStore
 const popup = reactive({
   visible: false,
   type: null,
@@ -23,7 +27,7 @@ onMounted(async () => {
     const instance = await inst(true)
     const response = await instance.get(`${BASE_URL}/apps`)
     setApps(response.data.data)
-    setCurrApp(apps.value[0])
+    setCurrApp(lget('currApp'))
   } catch (error) {
     console.log(error)
   }
@@ -120,20 +124,21 @@ const handleDeleteApp = (id, name) => {
 }
 const setApp = (app) => {
   setCurrApp(app)
+  closeApps()
 }
 const closeApps = () => {
   showApps.value = !showApps.value
   search.value = ''
 }
-const handleDeleteKey = (id) => {
+const handleDeleteKey = (name) => {
   popup.visible = true
   popup.type = 'deleteKey'
   popup.decision = true
   popup.callback = async () => {
     try {
       const instance = await inst(true)
-      await instance.delete(`${BASE_URL}/apps/${currApp.value._id}/keys/${id}`)
-      removeFromApps(id)
+      await instance.delete(`${BASE_URL}/apps/${currApp.value._id}/keys/${name}`)
+      removeFromKeys(name)
     } catch (error) {
       console.error(error)
     } finally {
@@ -141,15 +146,17 @@ const handleDeleteKey = (id) => {
     }
   }
 }
-const handleRevokeKey = (id) => {
+const handleRevokeKey = (name) => {
   popup.visible = true
   popup.type = 'revokeKey'
   popup.decision = true
   popup.callback = async () => {
     try {
       const instance = await inst(true)
-      await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys/${id}/revoke`)
-      removeFromApps(id)
+      const response = await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys/${name}/revoke`)
+      const { data } = response.data
+      modifyKey(name, data)
+      console.log(data)
     } catch (error) {
       console.error(error)
     } finally {
@@ -165,7 +172,7 @@ const handleRevokeKeys = () => {
     try {
       const instance = await inst(true)
       await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys/all/revoke`)
-      removeFromApps(id)
+      // removeFromApps(id)
     } catch (error) {
       console.error(error)
     } finally {
