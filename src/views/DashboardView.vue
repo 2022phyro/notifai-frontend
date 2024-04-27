@@ -191,7 +191,7 @@ const handleRevokeKeys = () => {
       </RouterLink>
       <div class="apps">
         <p class="current" @click="closeApps">
-          <span>{{ currApp.name }}</span>
+          <span>{{ currApp?.name || '' }}</span>
           <fa-icon :icon="['fas', showApps ? 'caret-up' : 'caret-down']" />
         </p>
         <ul v-if="showApps">

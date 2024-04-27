@@ -59,7 +59,7 @@ const handleSubmit = async () => {
       isLoading.value = false
     } else {
       const instance = await inst()
-      instance()
+      instance
         .post(`${BASE_URL}/signup`, form)
         .then((response) => {
           console.log(response.data)
