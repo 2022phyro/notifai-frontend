@@ -47,6 +47,7 @@ article {
   justify-content: flex-start;
   flex-flow: row nowrap;
   font-size: 13px;
+  z-index: -1;
 }
 article > .part {
   display: flex;

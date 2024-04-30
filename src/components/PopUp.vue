@@ -64,7 +64,7 @@ const emit = defineEmits(['closePopUp', 'pFormSuccess', 'nFormSuccess', 'dFormSu
 const allMessages = {
   deleteMsg: ['Are you sure you want to delete this message', 'Delete'],
   logout: ['Are you sure you want to logout?', 'Delete'],
-  deleteAcc: ['Are you sure you want to delete your account?', 'Delete'],
+  deleteAccount: ['Are you sure you want to delete your account?', 'Delete'],
   deleteApp: [
     `Type in the name ${props.args[0]}. Note this action is irreversible and you will lose all data associated with it`,
     'Delete'

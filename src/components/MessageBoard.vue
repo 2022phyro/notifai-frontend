@@ -155,9 +155,9 @@ const toggleActive = () => {
 div.message-filter {
   transition: right 0.5s ease;
   background-color: var(--color-background);
-  z-index: 1;
   right: 0;
   width: 250px;
+  z-index: 1;
 }
 
 .message-filter.active {

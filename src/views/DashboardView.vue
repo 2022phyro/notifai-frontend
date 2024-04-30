@@ -69,6 +69,7 @@ const handleShowMsg = (id) => {
   }
   // Update other properties here...
 }
+
 const handleDeleteMsg = (id) => {
   popup.visible = true
   popup.type = 'deleteMsg'
@@ -97,6 +98,23 @@ const handleNewApp = () => {
       const { data } = response.data
       setCurrApp(data)
       addToApps(data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      closePopUp()
+    }
+  }
+}
+
+const handleDeleteAccount = () => {
+  popup.visible = true
+  popup.type = 'deleteAccount'
+  popup.decision = true
+  popup.callback = async () => {
+    try {
+      const instance = await inst(true)
+      await instance.delete(`${BASE_URL}/org`)
+      window.location.href = '/'
     } catch (error) {
       console.error(error)
     } finally {
@@ -153,7 +171,9 @@ const handleRevokeKey = (name) => {
   popup.callback = async () => {
     try {
       const instance = await inst(true)
-      const response = await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys/${name}/revoke`)
+      const response = await instance.post(
+        `${BASE_URL}/apps/${currApp.value._id}/keys/${name}/revoke`
+      )
       const { data } = response.data
       modifyKey(name, data)
       console.log(data)
@@ -166,9 +186,9 @@ const handleRevokeKey = (name) => {
 }
 const handleRevokeKeys = () => {
   popup.visible = true
-	popup.type = 'deleteRevokeKeys'
-	popup.decision = true
-	popup.callback = async () => {
+  popup.type = 'deleteRevokeKeys'
+  popup.decision = true
+  popup.callback = async () => {
     try {
       const instance = await inst(true)
       await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys/all/revoke`)
@@ -178,7 +198,7 @@ const handleRevokeKeys = () => {
     } finally {
       closePopUp()
     }
-	}
+  }
 }
 </script>
 <template>
@@ -189,8 +209,8 @@ const handleRevokeKeys = () => {
         <img alt="Vue logo" src="/logo.png" width="125" height="125" />
         <span>NotifAI</span>
       </RouterLink>
-      <div class="apps">
-        <p class="current" @click="closeApps">
+      <div class="apps" @click="closeApps">
+        <p class="current">
           <span>{{ currApp?.name || '' }}</span>
           <fa-icon :icon="['fas', showApps ? 'caret-up' : 'caret-down']" />
         </p>
@@ -201,10 +221,10 @@ const handleRevokeKeys = () => {
           <li
             v-for="app in appList"
             :key="app._id"
-            :class="{ btn: true, curr: currApp === app }"
-            @click="setApp(app)"
+            :class="{ btn: true, curr: currApp?.name === app.name }"
+            @click.stop="setApp(app)"
           >
-            <fa-icon :icon="['fas', 'mobile-screen-button']" v-if="currApp === app" />{{ app.name }}
+            <fa-icon :icon="['fas', 'mobile-screen-button']" v-if="currApp?.name === app.name" />{{ app.name }}
           </li>
         </ul>
       </div>
@@ -219,6 +239,7 @@ const handleRevokeKeys = () => {
         @revokeKey="handleRevokeKey"
         @deleteKey="handleDeleteKey"
         @revokeKeys="handleRevokeKeys"
+        @deleteAccount="handleDeleteAccount"
       />
     </div>
   </div>
@@ -245,7 +266,7 @@ header {
   height: 50px;
   background: var(--color-background);
   box-shadow: 2px 1px 2px black;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -261,7 +282,8 @@ header {
   gap: 10px;
   padding-left: 20px;
 }
-.logo img {
+.logo img,
+.lg-img {
   width: 30px;
   height: 30px;
   border: 1px solid var(--primary);

@@ -65,6 +65,11 @@ const router = createRouter({
           path: 'keys',
           name: 'dbKeys',
           component: () => import('../components/KeysBoard.vue')
+        },
+        {
+          path: 'me',
+          name: 'me',
+          component: () => import('../components/UserProfile.vue')
         }
       ]
     }

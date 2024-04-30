@@ -9,6 +9,7 @@ import { inst, BASE_URL } from '@/utils/auth'
 const isLoading = ref(false)
 const lgError = ref(null)
 const authStore = useAuthStore()
+const { setAuth, setToken } = authStore
 const router = useRouter()
 const form = reactive({
   firstName: '',
@@ -54,27 +55,24 @@ const handleSubmit = async () => {
   isLoading.value = true
   if (isLoading.value) {
     const result = await v$.value.$validate()
-    console.log(result)
     if (!result) {
       isLoading.value = false
     } else {
-      const instance = await inst()
-      instance
-        .post(`${BASE_URL}/signup`, form)
-        .then((response) => {
-          console.log(response.data)
-          const result = response.data.data
-          authStore.setAuth(true)
-          authStore.setToken(result.accessToken, result.access_exp)
-          router.push('/dashboard')
-          isLoading.value = false
-          lgError.value = null
-        })
-        .catch((error) => {
-          const result = error.response.data.errors
-          lgError.value = Object.values(result)[0][0]
-          isLoading.value = false
-        })
+      try {
+        const instance = await inst()
+        const response = await instance.post(`${BASE_URL}/signup`, form)
+        const result = response.data.data.tokens
+        setAuth(true)
+        setToken(result.accessToken, result.access_exp)
+        router.push('/dashboard')
+        isLoading.value = false
+        lgError.value = null
+      } catch (error) {
+          const result = error.response?.data?.errors
+          if (result)
+            lgError.value = Object.values(result)[0][0]
+          isLoading.value = false        
+      }
     }
   }
 }

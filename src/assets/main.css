@@ -15,7 +15,7 @@ a {
 }
 .button-outline,
 .a-button-outline {
-  border: 1px solid #383636;
+  border: 1px solid var(--pri-plain);
   color: #222020;
   background-color: white;
   padding: 0.1rem 1rem;
@@ -36,7 +36,7 @@ a {
 .button-outline:hover,
 .a-button-outline:hover {
   color: white;
-  background-color: #222020;
+  background-color: var(--pri-plain);
 }
 .button-outline:active,
 .a-button-outline:active {
