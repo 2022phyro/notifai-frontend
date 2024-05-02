@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router'
   <header>
     <RouterLink to="/" class="logo">
       <img alt="Vue logo" src="/logo.png" width="125" height="125" />
-      <span>NotifAI</span>
+      <span>Notifai</span>
     </RouterLink>
     <div class="wrapper">
       <RouterLink to="/auth/" class="b-pri">Login</RouterLink>

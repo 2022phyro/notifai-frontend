@@ -206,7 +206,7 @@ const handleRevokeKeys = () => {
     <header>
       <RouterLink to="/" class="logo">
         <img alt="Vue logo" src="/logo.png" width="125" height="125" />
-        <span>NotifAI</span>
+        <span>Notifai</span>
       </RouterLink>
       <div class="apps" @click="closeApps">
         <p class="current">
