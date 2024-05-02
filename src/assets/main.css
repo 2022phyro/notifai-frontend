@@ -137,7 +137,7 @@ p span.red {
   transform: scale(0.9);
 }
 .b-pri {
-  background: linear-gradient(45deg, lightblue, navy);
+  background: rgb(41, 41, 204);
   border: none;
   color: white;
 }
