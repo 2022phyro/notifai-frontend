@@ -59,7 +59,7 @@ const router = createRouter({
         {
           path: 'docs',
           name: 'dbDocs',
-          component: () => import('../components/KeysBoard.vue')
+          component: () => import('../components/BackendDocs.vue')
         },
         {
           path: 'keys',
