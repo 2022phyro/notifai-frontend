@@ -27,7 +27,7 @@ main {
   align-self: center;
   justify-content: space-evenly;
   gap: 20px;
-  font-family: Inter;
+  font-family: 'Mulish', sans-serif;
   margin: 0 40px;
   margin-top: 60px;
   padding-top: 40px;
