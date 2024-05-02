@@ -9,7 +9,7 @@ import { inst, BASE_URL } from '@/utils/auth'
 const isLoading = ref(false)
 const lgError = ref(null)
 const authStore = useAuthStore()
-const { setAuth, setToken } = authStore
+const { setAuth, setCurrToken } = authStore
 const router = useRouter()
 const form = reactive({
   firstName: '',
@@ -63,11 +63,12 @@ const handleSubmit = async () => {
         const response = await instance.post(`${BASE_URL}/signup`, form)
         const result = response.data.data.tokens
         setAuth(true)
-        setToken(result.accessToken, result.access_exp)
+        setCurrToken(result.accessToken, result.access_exp)
         router.push('/dashboard')
         isLoading.value = false
         lgError.value = null
       } catch (error) {
+        console.error(error)
           const result = error.response?.data?.errors
           if (result)
             lgError.value = Object.values(result)[0][0]

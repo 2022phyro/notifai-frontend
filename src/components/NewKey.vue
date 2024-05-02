@@ -29,11 +29,9 @@ const generateKey = async () => {
       expiry: expiryDate.value,
       scopes: selectedScopes
     }
-    console.log(body)
     const instance = await inst(true)
     const response = await instance.post(`${BASE_URL}/apps/${currApp.value._id}/keys`, body)
     const { data } = response.data
-    console.log(data)
     msg.value = data.key
     delete data.key
     addToKeys(data)

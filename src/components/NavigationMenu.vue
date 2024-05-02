@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink, useRoute } from 'vue-router'
 import { inst, BASE_URL } from '@/utils/auth'
+import { lLogout } from '@/utils/ls';
 
 const emit = defineEmits(['newApp'])
 const route = useRoute()
@@ -14,6 +15,7 @@ const handleLogout = () => {
     instance.post(`${BASE_URL}/logout`)
     .then(() => {
       window.location.href = '/'
+      lLogout()
     })
   })
 }

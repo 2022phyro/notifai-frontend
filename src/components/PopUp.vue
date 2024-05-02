@@ -94,20 +94,11 @@ watch(type, async () => {
         notification.data = {}
         const data = await props.callback()
         Object.assign(notification, data.value)
-        console.log(notification)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
       break
     }
-    case 'nForm':
-      console.log('nForm')
-      break
-    case 'dForm':
-      console.log('dForm')
-      break
-    default:
-      console.log('default')
   }
 })
 const close = () => {

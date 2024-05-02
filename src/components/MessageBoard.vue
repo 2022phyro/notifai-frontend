@@ -37,7 +37,6 @@ const fetchMessages = async (pageNo, going) => {
       `${BASE_URL}/apps/${currApp.value._id}/notifications?page=${pageNo}&${queryString}`
     )
     const { data } = res.data
-    console.log(data)
     if (going === 'next' && data.messages.length <= 0) {
       next.value = null
       return

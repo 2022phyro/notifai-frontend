@@ -1,9 +1,9 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { lset, ldel } from '@/utils/ls'
+import { lset, ldel, lget } from '@/utils/ls'
 
 export const useAppStore = defineStore('apps', () => {
-  const currApp = ref({})
+  const currApp = ref(lget('currApp') || {})
   const apps = ref([])
 
   function setApps(value) {

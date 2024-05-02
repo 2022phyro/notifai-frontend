@@ -63,7 +63,6 @@ const submitForm = async () => {
   const result = await v$.value.$validate()
   if (!result) {
     isLoading.value = false
-    console.log(form.data)
   } else {
     try {
       const { data, ...body } = form
@@ -76,11 +75,10 @@ const submitForm = async () => {
         body
       )
       const result = response.data.data
-      console.log(result)
       router.push('/dashboard')
       errMsg.value = null
     } catch (error) {
-      console.log(error)
+      console.error(error)
       errMsg.value = 'Something went wrong. Please try again later'
     } finally {
       isLoading.value = false

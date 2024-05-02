@@ -7,7 +7,7 @@ import { useAppStore } from '@/stores/app'
 import { useKeysStore } from '@/stores/keys'
 import { storeToRefs } from 'pinia'
 import { inst, BASE_URL } from '@/utils/auth'
-import { lget } from '@/utils/ls'
+import { lLogout, lget } from '@/utils/ls'
 const appStore = useAppStore()
 const keyStore = useKeysStore()
 const { currApp, apps } = storeToRefs(appStore)
@@ -27,9 +27,9 @@ onMounted(async () => {
     const instance = await inst(true)
     const response = await instance.get(`${BASE_URL}/apps`)
     setApps(response.data.data)
-    setCurrApp(lget('currApp'))
+    setCurrApp(lget('currApp') || apps.value[0])
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 })
 
@@ -92,7 +92,6 @@ const handleNewApp = () => {
   popup.decision = true
   popup.callback = async (name) => {
     try {
-      console.log(name)
       const instance = await inst(true)
       const response = await instance.post(`${BASE_URL}/apps/`, { name })
       const { data } = response.data
@@ -114,6 +113,7 @@ const handleDeleteAccount = () => {
     try {
       const instance = await inst(true)
       await instance.delete(`${BASE_URL}/org`)
+      lLogout()
       window.location.href = '/'
     } catch (error) {
       console.error(error)
@@ -176,7 +176,6 @@ const handleRevokeKey = (name) => {
       )
       const { data } = response.data
       modifyKey(name, data)
-      console.log(data)
     } catch (error) {
       console.error(error)
     } finally {
@@ -244,6 +243,7 @@ const handleRevokeKeys = () => {
     </div>
   </div>
   <PopUp v-bind="popup" @closePopUp="closePopUp" />
+  <notifications />
 </template>
 <style scoped>
 .dashboard {

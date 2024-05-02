@@ -64,7 +64,6 @@ onMounted(() => {
   inst(true).then((instance) => {
     instance.get(`${BASE_URL}/org`).then((response) => {
       const result = response.data.data
-      console.log(result)
       Object.assign(prev, result)
       Object.assign(form, result)
     })
@@ -94,8 +93,6 @@ const handleSubmit = async () => {
         isLoading.value = false;
         return;
       }
-
-      console.log(changes)
 
       inst(true)
       .then(instance => {
@@ -185,7 +182,6 @@ const handleSubmit = async () => {
       <button class="b-sec" @click="verifyPwd">Verify your Account</button>
       <button class="b-danger" @click="deleteAcc">Delete Account</button>
     </div>
-    <notifications />
   </div>
 </template>
 <style scoped>
