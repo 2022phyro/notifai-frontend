@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
-const BASE_URL = 'https://notifai.allcanlearn.me/api/v1'
-// const BASE_URL = 'http://localhost:3000/api/v1'
+const BASE_URL = 'https://notifai-server-r3nas.ondigitalocean.app/api/v1'
 const LEEWAY = 600000
 
 async function getToken() {
