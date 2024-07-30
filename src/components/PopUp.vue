@@ -115,7 +115,7 @@ const close = () => {
     <div class="popup-body">
       <span class="close btn" @click="close" v-if="!isLoading">&times;</span>
       <div class="viewMsg" v-if="props.type === 'showMsg'">
-        <h3><img :src="notification.icon" />{{ notification.title }}</h3>
+        <h3><img :src="notification.icon" alt="notification" />{{ notification.title }}</h3>
         <p>
           <span class="label">Click action: </span>{{ notification.clickUrl || 'None present' }}
         </p>

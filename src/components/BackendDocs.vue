@@ -28,9 +28,6 @@ onMounted(async () => {
 .docs ul {
     list-style: square;
 }
-.docs li {
-    
-}
 .docs pre {
     background: #ccc;
     padding: 5px 15px;
